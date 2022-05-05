@@ -31,7 +31,7 @@ namespace SavingService.CrossCutting.Mapper
             //    .ReverseMap();
 
 
-            //CreateMap<Roles, RolesDto>().ReverseMap();
+            CreateMap<Roles, RolesDto>().ReverseMap();
             //CreateMap<Users, UsersDto>().ReverseMap();
             //CreateMap<UserData, UserDataDto>().ReverseMap();
         }

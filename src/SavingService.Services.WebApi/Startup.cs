@@ -191,22 +191,27 @@ namespace SavingService.Services.WebApi
 
             services.AddAutoMapper(x => x.AddProfile(new MappingsProfile()));
             services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+            
             // Dependecy injection for customers
             services.AddScoped<ICustomersApplication, CustomersApplication>();
             services.AddScoped<ICustomersDomain, CustomersDomain>();
             services.AddScoped<ICustomersRepository, CustomersRepository>();
+
+            // Dependecy injection for roles
+            services.AddScoped<IRolesApplication, RolesApplication>();
+            services.AddScoped<IRolesDomain, RolesDomain>();
+            services.AddScoped<IRolesRepository, RolesRepository>();
+
             // Dependecy injection for users
             //services.AddScoped<IUsersApplication, UsersApplication>();
             //services.AddScoped<IUsersDomain, UsersDomain>();
             //services.AddScoped<IUsersRepository, UsersRepository>();
-            // Dependecy injection for roles
-            //services.AddScoped<IRolesApplication, RolesApplication>();
-            //services.AddScoped<IRolesDomain, RolesDomain>();
-            //services.AddScoped<IRolesRepository, RolesRepository>();
+
             // Dependecy injection for userData
             //services.AddScoped<IUserDataApplication, UserDataApplication>();
             //services.AddScoped<IUserDataDomain, UserDataDomain>();
             //services.AddScoped<IUserDataRepository, UserDataRepository>();
+
             // Dependecy injection for logger
             //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
