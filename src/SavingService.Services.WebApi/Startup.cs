@@ -207,10 +207,10 @@ namespace SavingService.Services.WebApi
             services.AddScoped<IUsersDomain, UsersDomain>();
             services.AddScoped<IUsersRepository, UsersRepository>();
 
-            // Dependecy injection for userData
-            //services.AddScoped<IUserDataApplication, UserDataApplication>();
-            //services.AddScoped<IUserDataDomain, UserDataDomain>();
-            //services.AddScoped<IUserDataRepository, UserDataRepository>();
+            // Dependecy injection for transaction
+            services.AddScoped<ITransactionApplication, TransactionApplication>();
+            services.AddScoped<ITransactionDomain, TransactionDomain>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
 
             // Dependecy injection for logger
             //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
