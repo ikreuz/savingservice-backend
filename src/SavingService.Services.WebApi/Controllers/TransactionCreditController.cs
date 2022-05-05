@@ -44,24 +44,24 @@ namespace SavingService.Services.WebApi.Controllers
             return BadRequest(response.Message);
         }
 
-        [HttpDelete("delete/{userDataId}")]
-        public IActionResult Delete(int userDataId)
+        [HttpDelete("delete/{transactionId}")]
+        public IActionResult Delete(int transactionId)
         {
-            if (userDataId <= 0) return BadRequest();
+            if (transactionId <= 0) return BadRequest();
 
-            var response = _transactionCreditApplication.Delete(userDataId);
+            var response = _transactionCreditApplication.Delete(transactionId);
 
             if (response.IsSuccess) return Ok(response);
 
             return BadRequest(response.Message);
         }
 
-        [HttpGet("get/{userDataId}")]
-        public IActionResult Get(int userDataId)
+        [HttpGet("get/{transactionId}")]
+        public IActionResult Get(int transactionId)
         {
-            if (userDataId <= 0) return BadRequest();
+            if (transactionId <= 0) return BadRequest();
 
-            var response = _transactionCreditApplication.Get(userDataId);
+            var response = _transactionCreditApplication.Get(transactionId);
 
             if (response.IsSuccess) return Ok(response);
 
@@ -105,24 +105,24 @@ namespace SavingService.Services.WebApi.Controllers
             return BadRequest(response.Message);
         }
 
-        [HttpDelete("deleteAsync/{userDataId}")]
-        public async Task<IActionResult> DeleteAsync(int userDataId)
+        [HttpDelete("deleteAsync/{transactionId}")]
+        public async Task<IActionResult> DeleteAsync(int transactionId)
         {
-            if (userDataId <= 0) return BadRequest();
+            if (transactionId <= 0) return BadRequest();
 
-            var response = await _transactionCreditApplication.DeleteAsync(userDataId);
+            var response = await _transactionCreditApplication.DeleteAsync(transactionId);
 
             if (response.IsSuccess) return Ok(response);
 
             return BadRequest(response.Message);
         }
 
-        [HttpGet("getAsync/{userDataId}")]
-        public async Task<IActionResult> GetAsync(int userDataId)
+        [HttpGet("getAsync/{transactionId}")]
+        public async Task<IActionResult> GetAsync(int transactionId)
         {
-            if (userDataId <= 0) return BadRequest();
+            if (transactionId <= 0) return BadRequest();
 
-            var response = await _transactionCreditApplication.GetAsync(userDataId);
+            var response = await _transactionCreditApplication.GetAsync(transactionId);
 
             if (response.IsSuccess) return Ok(response);
 

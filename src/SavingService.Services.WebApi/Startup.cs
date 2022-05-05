@@ -212,12 +212,15 @@ namespace SavingService.Services.WebApi
             services.AddScoped<ITransactionDomain, TransactionDomain>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
 
-            // Dependecy injection for transaction
+            // Dependecy injection for transactionCredit
             services.AddScoped<ITransactionCreditApplication, TransactionCreditApplication>();
             services.AddScoped<ITransactionCreditDomain, TransactionCreditDomain>();
             services.AddScoped<ITransactionCreditRepository, TransactionCreditRepository>();
 
-
+            // Dependecy injection for transactionSaving
+            services.AddScoped<ITransactionSavingApplication, TransactionSavingApplication>();
+            services.AddScoped<ITransactionSavingDomain, TransactionSavingDomain>();
+            services.AddScoped<ITransactionSavingRepository, TransactionSavingRepository>();
             // Dependecy injection for logger
             //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 

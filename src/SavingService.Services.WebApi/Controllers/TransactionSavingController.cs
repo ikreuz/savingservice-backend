@@ -9,23 +9,23 @@ namespace SavingService.Services.WebApi.Controllers
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
-    public class TransactionController : ControllerBase
+    public class TransactionSavingController : ControllerBase
     {
-        private readonly ITransactionApplication _transactionApplication;
-        public TransactionController(ITransactionApplication transactionApplication)
+        private readonly ITransactionSavingApplication _transactionSavingApplication;
+        public TransactionSavingController(ITransactionSavingApplication transactionSavingApplication)
         {
-            _transactionApplication = transactionApplication;
+            _transactionSavingApplication = transactionSavingApplication;
         }
 
 
         #region Synchronous Methods
 
         [HttpPost("insert")]
-        public IActionResult Insert([FromBody] TransactionDto transactionDto)
+        public IActionResult Insert([FromBody] TransactionSavingDto transactionDto)
         {
             if (transactionDto == null) return BadRequest();
 
-            var response = _transactionApplication.Insert(transactionDto);
+            var response = _transactionSavingApplication.Insert(transactionDto);
 
             if (response.IsSuccess) return Ok(response);
 
@@ -33,11 +33,11 @@ namespace SavingService.Services.WebApi.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromBody] TransactionDto transactionDto)
+        public IActionResult Update([FromBody] TransactionSavingDto transactionDto)
         {
             if (transactionDto == null) return BadRequest();
 
-            var response = _transactionApplication.Update(transactionDto);
+            var response = _transactionSavingApplication.Update(transactionDto);
 
             if (response.IsSuccess) return Ok(response);
 
@@ -49,7 +49,7 @@ namespace SavingService.Services.WebApi.Controllers
         {
             if (transactionId <= 0) return BadRequest();
 
-            var response = _transactionApplication.Delete(transactionId);
+            var response = _transactionSavingApplication.Delete(transactionId);
 
             if (response.IsSuccess) return Ok(response);
 
@@ -61,7 +61,7 @@ namespace SavingService.Services.WebApi.Controllers
         {
             if (transactionId <= 0) return BadRequest();
 
-            var response = _transactionApplication.Get(transactionId);
+            var response = _transactionSavingApplication.Get(transactionId);
 
             if (response.IsSuccess) return Ok(response);
 
@@ -71,7 +71,7 @@ namespace SavingService.Services.WebApi.Controllers
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
-            var response = _transactionApplication.GetAll();
+            var response = _transactionSavingApplication.GetAll();
 
             if (response.IsSuccess) return Ok(response);
 
@@ -82,11 +82,11 @@ namespace SavingService.Services.WebApi.Controllers
         #region Asynchronous Methods
 
         [HttpPost("insertAsync{transactionDto}")]
-        public async Task<IActionResult> InsertAsync([FromBody] TransactionDto transactionDto)
+        public async Task<IActionResult> InsertAsync([FromBody] TransactionSavingDto transactionDto)
         {
             if (transactionDto == null) return BadRequest();
 
-            var response = await _transactionApplication.InsertAsync(transactionDto);
+            var response = await _transactionSavingApplication.InsertAsync(transactionDto);
 
             if (response.IsSuccess) return Ok(response);
 
@@ -94,11 +94,11 @@ namespace SavingService.Services.WebApi.Controllers
         }
 
         [HttpPut("updateAsync/{transactionDto}")]
-        public async Task<IActionResult> UpdateAsync([FromBody] TransactionDto transactionDto)
+        public async Task<IActionResult> UpdateAsync([FromBody] TransactionSavingDto transactionDto)
         {
             if (transactionDto == null) return BadRequest();
 
-            var response = await _transactionApplication.UpdateAsync(transactionDto);
+            var response = await _transactionSavingApplication.UpdateAsync(transactionDto);
 
             if (response.IsSuccess) return Ok(response);
 
@@ -110,7 +110,7 @@ namespace SavingService.Services.WebApi.Controllers
         {
             if (transactionId <= 0) return BadRequest();
 
-            var response = await _transactionApplication.DeleteAsync(transactionId);
+            var response = await _transactionSavingApplication.DeleteAsync(transactionId);
 
             if (response.IsSuccess) return Ok(response);
 
@@ -122,7 +122,7 @@ namespace SavingService.Services.WebApi.Controllers
         {
             if (transactionId <= 0) return BadRequest();
 
-            var response = await _transactionApplication.GetAsync(transactionId);
+            var response = await _transactionSavingApplication.GetAsync(transactionId);
 
             if (response.IsSuccess) return Ok(response);
 
@@ -132,7 +132,7 @@ namespace SavingService.Services.WebApi.Controllers
         [HttpGet("getallAsync")]
         public async Task<IActionResult> GetAllAsync()
         {
-            var response = await _transactionApplication.GetAllAsync();
+            var response = await _transactionSavingApplication.GetAllAsync();
 
             if (response.IsSuccess) return Ok(response);
 
@@ -141,3 +141,5 @@ namespace SavingService.Services.WebApi.Controllers
         #endregion
     }
 }
+
+
