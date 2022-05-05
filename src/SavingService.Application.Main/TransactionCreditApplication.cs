@@ -11,26 +11,26 @@ using System.Threading.Tasks;
 
 namespace SavingService.Application.Main
 {
-    public class TransactionApplication : ITransactionApplication
+    public class TransactionCreditApplication : ITransactionCreditApplication
     {
-        private readonly ITransactionDomain _transactionDomain;
+        private readonly ITransactionCreditDomain _transactionCreditDomain;
         private readonly IMapper _mapper;
 
-        public TransactionApplication(ITransactionDomain transactionDomain, IMapper mapper)
+        public TransactionCreditApplication(ITransactionCreditDomain transactionCreditDomain, IMapper mapper)
         {
-            _transactionDomain = transactionDomain;
+            _transactionCreditDomain = transactionCreditDomain;
             _mapper = mapper;
         }
 
         #region Métodos Síncronos
 
-        public Response<bool> Insert(TransactionDto transactionDto)
+        public Response<bool> Insert(TransactionCreditDto transactionDto)
         {
             var response = new Response<bool>();
             try
             {
-                var transaction = _mapper.Map<Transaction>(transactionDto);
-                response.Data = _transactionDomain.Insert(transaction);
+                var transaction = _mapper.Map<TransactionCredit>(transactionDto);
+                response.Data = _transactionCreditDomain.Insert(transaction);
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -44,13 +44,13 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public Response<bool> Update(TransactionDto transactionDto)
+        public Response<bool> Update(TransactionCreditDto transactionDto)
         {
             var response = new Response<bool>();
             try
             {
-                var transaction = _mapper.Map<Transaction>(transactionDto);
-                response.Data = _transactionDomain.Update(transaction);
+                var transaction = _mapper.Map<TransactionCredit>(transactionDto);
+                response.Data = _transactionCreditDomain.Update(transaction);
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -69,7 +69,7 @@ namespace SavingService.Application.Main
             var response = new Response<bool>();
             try
             {
-                response.Data = _transactionDomain.Delete(userDataId);
+                response.Data = _transactionCreditDomain.Delete(userDataId);
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -83,13 +83,13 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public Response<TransactionDto> Get(int userDataId)
+        public Response<TransactionCreditDto> Get(int userDataId)
         {
-            var response = new Response<TransactionDto>();
+            var response = new Response<TransactionCreditDto>();
             try
             {
-                var transaction = _transactionDomain.Get(userDataId);
-                response.Data = _mapper.Map<TransactionDto>(transaction);
+                var transaction = _transactionCreditDomain.Get(userDataId);
+                response.Data = _mapper.Map<TransactionCreditDto>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;
@@ -103,13 +103,13 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public Response<IEnumerable<TransactionDto>> GetAll()
+        public Response<IEnumerable<TransactionCreditDto>> GetAll()
         {
-            var response = new Response<IEnumerable<TransactionDto>>();
+            var response = new Response<IEnumerable<TransactionCreditDto>>();
             try
             {
-                var transaction = _transactionDomain.GetAll();
-                response.Data = _mapper.Map<IEnumerable<TransactionDto>>(transaction);
+                var transaction = _transactionCreditDomain.GetAll();
+                response.Data = _mapper.Map<IEnumerable<TransactionCreditDto>>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;
@@ -126,13 +126,13 @@ namespace SavingService.Application.Main
         #endregion
 
         #region Métodos Asíncronos
-        public async Task<Response<bool>> InsertAsync(TransactionDto transactionDto)
+        public async Task<Response<bool>> InsertAsync(TransactionCreditDto transactionDto)
         {
             var response = new Response<bool>();
             try
             {
-                var transaction = _mapper.Map<Transaction>(transactionDto);
-                response.Data = await _transactionDomain.InsertAsync(transaction);
+                var transaction = _mapper.Map<TransactionCredit>(transactionDto);
+                response.Data = await _transactionCreditDomain.InsertAsync(transaction);
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -145,13 +145,13 @@ namespace SavingService.Application.Main
             }
             return response;
         }
-        public async Task<Response<bool>> UpdateAsync(TransactionDto transactionDto)
+        public async Task<Response<bool>> UpdateAsync(TransactionCreditDto transactionDto)
         {
             var response = new Response<bool>();
             try
             {
-                var transaction = _mapper.Map<Transaction>(transactionDto);
-                response.Data = await _transactionDomain.UpdateAsync(transaction);
+                var transaction = _mapper.Map<TransactionCredit>(transactionDto);
+                response.Data = await _transactionCreditDomain.UpdateAsync(transaction);
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -170,7 +170,7 @@ namespace SavingService.Application.Main
             var response = new Response<bool>();
             try
             {
-                response.Data = await _transactionDomain.DeleteAsync(userDataId);
+                response.Data = await _transactionCreditDomain.DeleteAsync(userDataId);
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -184,13 +184,13 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public async Task<Response<TransactionDto>> GetAsync(int userDataId)
+        public async Task<Response<TransactionCreditDto>> GetAsync(int userDataId)
         {
-            var response = new Response<TransactionDto>();
+            var response = new Response<TransactionCreditDto>();
             try
             {
-                var transaction = await _transactionDomain.GetAsync(userDataId);
-                response.Data = _mapper.Map<TransactionDto>(transaction);
+                var transaction = await _transactionCreditDomain.GetAsync(userDataId);
+                response.Data = _mapper.Map<TransactionCreditDto>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;
@@ -203,13 +203,13 @@ namespace SavingService.Application.Main
             }
             return response;
         }
-        public async Task<Response<IEnumerable<TransactionDto>>> GetAllAsync()
+        public async Task<Response<IEnumerable<TransactionCreditDto>>> GetAllAsync()
         {
-            var response = new Response<IEnumerable<TransactionDto>>();
+            var response = new Response<IEnumerable<TransactionCreditDto>>();
             try
             {
-                var transaction = await _transactionDomain.GetAllAsync();
-                response.Data = _mapper.Map<IEnumerable<TransactionDto>>(transaction);
+                var transaction = await _transactionCreditDomain.GetAllAsync();
+                response.Data = _mapper.Map<IEnumerable<TransactionCreditDto>>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;
