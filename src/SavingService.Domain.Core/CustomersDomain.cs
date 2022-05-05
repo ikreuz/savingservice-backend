@@ -28,12 +28,12 @@ namespace SavingService.Domain.Core
             return _customersRepository.Update(customers);
         }
 
-        public bool Delete(string customerId)
+        public bool Delete(int customerId)
         {
             return _customersRepository.Delete(customerId);
         }
 
-        public Customers Get(string customerId)
+        public Customers Get(int customerId)
         {
             return _customersRepository.Get(customerId);
         }
@@ -57,12 +57,12 @@ namespace SavingService.Domain.Core
             return await _customersRepository.UpdateAsync(customers);
         }
 
-        public async Task<bool> DeleteAsync(string customerId)
+        public async Task<bool> DeleteAsync(int customerId)
         {
             return await _customersRepository.DeleteAsync(customerId);
         }
 
-        public async Task<Customers> GetAsync(string customerId)
+        public async Task<Customers> GetAsync(int customerId)
         {
             return await _customersRepository.GetAsync(customerId);
         }

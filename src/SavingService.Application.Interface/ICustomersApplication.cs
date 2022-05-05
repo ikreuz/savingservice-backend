@@ -12,9 +12,9 @@ namespace SavingService.Application.Interface
         #region Synchronous Methods
         Response<bool> Insert(CustomersDto customersDto);
         Response<bool> Update(CustomersDto customersDto);
-        Response<bool> Delete(string customerId);
+        Response<bool> Delete(int customerId);
 
-        Response<CustomersDto> Get(string customerId);
+        Response<CustomersDto> Get(int customerId);
         Response<IEnumerable<CustomersDto>> GetAll();
 
         #endregion
@@ -22,9 +22,9 @@ namespace SavingService.Application.Interface
         #region Métodos Asíncronos
         Task<Response<bool>> InsertAsync(CustomersDto customersDto);
         Task<Response<bool>> UpdateAsync(CustomersDto customersDto);
-        Task<Response<bool>> DeleteAsync(string customerId);
+        Task<Response<bool>> DeleteAsync(int customerId);
 
-        Task<Response<CustomersDto>> GetAsync(string customerId);
+        Task<Response<CustomersDto>> GetAsync(int customerId);
         Task<Response<IEnumerable<CustomersDto>>> GetAllAsync();
         #endregion
     }

@@ -23,7 +23,7 @@ namespace SavingService.Infrastructure.Data
         {
             get
             {
-                _connectionString = _configuration.GetSection("ConnectionStrings").GetSection("DBParcelService").Value;
+                _connectionString = _configuration.GetSection("ConnectionStrings").GetSection("DBSavingService").Value;
 
                 NpgsqlConnection conn = new NpgsqlConnection(_connectionString);
 

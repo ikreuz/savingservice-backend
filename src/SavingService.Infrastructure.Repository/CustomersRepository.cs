@@ -76,26 +76,26 @@ namespace SavingService.Infrastructure.Repository
                 return result > 0;
             }
         }
-        public bool Delete(string customerId)
+        public bool Delete(int customerId)
         {
             using (var connection = _connectionFactory.GetConnection)
             {
                 var query = _pathToQuery + "_eliminar";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_customer_id", customerId);
+                parameters.Add("@_cliente_id", customerId);
 
                 var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
 
-        public Customers Get(string customerId)
+        public Customers Get(int customerId)
         {
             using (var connection = _connectionFactory.GetConnection)
             {
                 var query = _pathToQuery + "_obtener_id";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_customer_id", customerId);
+                parameters.Add("@_cliente_id", customerId);
 
                 var customer = connection.QuerySingle<Customers>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return customer;
@@ -172,26 +172,26 @@ namespace SavingService.Infrastructure.Repository
             }
         }
 
-        public async Task<bool> DeleteAsync(string customerId)
+        public async Task<bool> DeleteAsync(int customerId)
         {
             using (var connection = _connectionFactory.GetConnection)
             {
                 var query = _pathToQuery + "_eliminar";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_customer_id", customerId);
+                parameters.Add("@_cliente_id", customerId);
 
                 var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
 
-        public async Task<Customers> GetAsync(string customerId)
+        public async Task<Customers> GetAsync(int customerId)
         {
             using (var connection = _connectionFactory.GetConnection)
             {
                 var query = _pathToQuery + "_obtener_id";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_customer_id", customerId);
+                parameters.Add("@_cliente_id", customerId);
 
                 var customer = await connection.QuerySingleAsync<Customers>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return customer;

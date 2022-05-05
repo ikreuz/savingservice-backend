@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>V:\st00th\var.repos\savingservice-backend\src\SavingService.Services.WebApi\SavingService.Services.WebApi.xml</DocumentationFile>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="11.0.1" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.24" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.24" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.3.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SavingService.Application.DTO\SavingService.Application.DTO.csproj" />
+	  <ProjectReference Include="..\SavingService.Application.Interface\SavingService.Application.Interface.csproj" />
+	  <ProjectReference Include="..\SavingService.Application.Main\SavingService.Application.Main.csproj" />
+	  <ProjectReference Include="..\SavingService.CrossCutting.Common\SavingService.CrossCutting.Common.csproj" />
+	  <ProjectReference Include="..\SavingService.CrossCutting.Mapper\SavingService.CrossCutting.Mapper.csproj" />
+	  <ProjectReference Include="..\SavingService.Domain.Core\SavingService.Domain.Core.csproj" />
+	  <ProjectReference Include="..\SavingService.Domain.Entity\SavingService.Domain.Entity.csproj" />
+	  <ProjectReference Include="..\SavingService.Domain.Interface\SavingService.Domain.Interface.csproj" />
+	  <ProjectReference Include="..\SavingService.Infrastructure.Data\SavingService.Infrastructure.Data.csproj" />
+	  <ProjectReference Include="..\SavingService.Infrastructure.Interface\SavingService.Infrastructure.Interface.csproj" />
+	  <ProjectReference Include="..\SavingService.Infrastructure.Repository\SavingService.Infrastructure.Repository.csproj" />
+	</ItemGroup>
+</Project>

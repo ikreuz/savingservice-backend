@@ -11,9 +11,9 @@ namespace SavingService.Infrastructure.Interface
         #region Synchronous Methods
         bool Insert(Customers customers);
         bool Update(Customers customers);
-        bool Delete(string customerId);
+        bool Delete(int customerId);
 
-        Customers Get(string customerId);
+        Customers Get(int customerId);
         IEnumerable<Customers> GetAll();
         #endregion
 
@@ -21,9 +21,9 @@ namespace SavingService.Infrastructure.Interface
         #region Asynchronous Methods
         Task<bool> InsertAsync(Customers customers);
         Task<bool> UpdateAsync(Customers customers);
-        Task<bool> DeleteAsync(string customerId);
+        Task<bool> DeleteAsync(int customerId);
 
-        Task<Customers> GetAsync(string customerId);
+        Task<Customers> GetAsync(int customerId);
         Task<IEnumerable<Customers>> GetAllAsync();
         #endregion
     }

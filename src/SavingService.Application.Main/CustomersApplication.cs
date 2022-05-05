@@ -63,7 +63,7 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public Response<bool> Delete(string customerId)
+        public Response<bool> Delete(int customerId)
         {
             var response = new Response<bool>();
             try
@@ -82,7 +82,7 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public Response<CustomersDto> Get(string customerId)
+        public Response<CustomersDto> Get(int customerId)
         {
             var response = new Response<CustomersDto>();
             try
@@ -164,7 +164,7 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public async Task<Response<bool>> DeleteAsync(string customerId)
+        public async Task<Response<bool>> DeleteAsync(int customerId)
         {
             var response = new Response<bool>();
             try
@@ -183,7 +183,7 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public async Task<Response<CustomersDto>> GetAsync(string customerId)
+        public async Task<Response<CustomersDto>> GetAsync(int customerId)
         {
             var response = new Response<CustomersDto>();
             try

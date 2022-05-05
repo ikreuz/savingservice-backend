@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SavingService.Domain.Interf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SavingService.Application.Main", "src\SavingService.Application.Main\SavingService.Application.Main.csproj", "{51B0DB01-98D8-4D84-BA62-6E0CF2A4C7AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SavingService.Services.WebApi", "src\SavingService.Services.WebApi\SavingService.Services.WebApi.csproj", "{60B886EC-3CD2-42F5-B8A6-415D0871A1D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{51B0DB01-98D8-4D84-BA62-6E0CF2A4C7AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51B0DB01-98D8-4D84-BA62-6E0CF2A4C7AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51B0DB01-98D8-4D84-BA62-6E0CF2A4C7AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60B886EC-3CD2-42F5-B8A6-415D0871A1D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60B886EC-3CD2-42F5-B8A6-415D0871A1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60B886EC-3CD2-42F5-B8A6-415D0871A1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B886EC-3CD2-42F5-B8A6-415D0871A1D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{B887A008-92F1-47E9-8F97-BADDA3173510} = {3B47C2E6-B6DF-4A7E-81DD-1A042DA394BA}
 		{C1B9E273-4F87-4CB2-BE4A-1DACEB030509} = {3B47C2E6-B6DF-4A7E-81DD-1A042DA394BA}
 		{51B0DB01-98D8-4D84-BA62-6E0CF2A4C7AD} = {355A33B3-8532-401F-B054-6A7CEC7BA563}
+		{60B886EC-3CD2-42F5-B8A6-415D0871A1D6} = {902ADC38-ECDD-488F-9367-D3F2C6E55FB9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF169FF3-A06E-4BA5-9859-B44633EEB689}
