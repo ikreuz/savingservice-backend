@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SavingService.Domain.Entity\SavingService.Domain.Entity.csproj" />
+    <ProjectReference Include="..\SavingService.Domain.Interface\SavingService.Domain.Interface.csproj" />
+    <ProjectReference Include="..\SavingService.Infrastructure.Interface\SavingService.Infrastructure.Interface.csproj" />
+  </ItemGroup>
+
+</Project>
