@@ -203,9 +203,9 @@ namespace SavingService.Services.WebApi
             services.AddScoped<IRolesRepository, RolesRepository>();
 
             // Dependecy injection for users
-            //services.AddScoped<IUsersApplication, UsersApplication>();
-            //services.AddScoped<IUsersDomain, UsersDomain>();
-            //services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IUsersApplication, UsersApplication>();
+            services.AddScoped<IUsersDomain, UsersDomain>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
 
             // Dependecy injection for userData
             //services.AddScoped<IUserDataApplication, UserDataApplication>();
