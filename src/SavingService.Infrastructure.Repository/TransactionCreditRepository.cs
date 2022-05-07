@@ -36,7 +36,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_total", transaction.Total);
                 parameters.Add("@_status_id", transaction.Status_Id);
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -55,7 +55,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_total", transaction.Total);
                 parameters.Add("@_status_id", transaction.Status_Id);
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -113,7 +113,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_total", transaction.Total);
                 parameters.Add("@_status_id", transaction.Status_Id);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -132,7 +132,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_total", transaction.Total);
                 parameters.Add("@_status_id", transaction.Status_Id);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }

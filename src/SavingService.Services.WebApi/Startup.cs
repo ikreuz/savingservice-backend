@@ -26,7 +26,7 @@ namespace SavingService.Services.WebApi
 {
     public class Startup
     {
-        readonly string myPolicy = "policySavingService";
+        readonly string myPolicy = "policyApiEcommerce";
 
         public Startup(IConfiguration configuration)
         {
@@ -39,9 +39,10 @@ namespace SavingService.Services.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddConfitureServices(Configuration);
-            services.AddCors(options => options.AddPolicy(myPolicy, builder => builder.WithOrigins(Configuration["Config:OriginCors"])
-            .AllowAnyHeader()
-            .AllowAnyMethod()));
+            //services.AddCors(options => options.AddPolicy(myPolicy, builder => builder.WithOrigins(Configuration["Config:OriginCors"])
+            //                                                                .AllowAnyHeader()
+            //                                                                .AllowAnyMethod()));
+
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
@@ -169,12 +170,16 @@ namespace SavingService.Services.WebApi
                 c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
             });
 
+            app.UseCors(x => x
+             .AllowAnyOrigin()
+             .AllowAnyMethod()
+             .AllowAnyHeader());
+
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

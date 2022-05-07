@@ -34,7 +34,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_cantidad", transaction.Cantidad);
                 parameters.Add("@_total", transaction.Total);
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -51,7 +51,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_cantidad", transaction.Cantidad);
                 parameters.Add("@_total", transaction.Total);
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -107,7 +107,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_cantidad", transaction.Cantidad);
                 parameters.Add("@_total", transaction.Total);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -124,7 +124,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_cantidad", transaction.Cantidad);
                 parameters.Add("@_total", transaction.Total);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }

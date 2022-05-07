@@ -37,7 +37,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_usr_registra_id", transaction.Usr_Registra);
                 parameters.Add("@_usr_modifica_id", transaction.Usr_Modifica);
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -57,7 +57,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_usr_registra_id", transaction.Usr_Registra);
                 parameters.Add("@_usr_modifica_id", transaction.Usr_Modifica);
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -116,7 +116,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_usr_registra_id", transaction.Usr_Registra);
                 parameters.Add("@_usr_modifica_id", transaction.Usr_Modifica);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -136,7 +136,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_usr_registra_id", transaction.Usr_Registra);
                 parameters.Add("@_usr_modifica_id", transaction.Usr_Modifica);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }

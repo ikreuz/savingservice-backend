@@ -32,7 +32,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_role_name", roles.Role_Name);
 
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -46,7 +46,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_role_id", roles.Role_Id);
                 parameters.Add("@_role_name", roles.Role_Name);
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -99,7 +99,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_role_id", roles.Role_Id);
                 parameters.Add("@_role_name", roles.Role_Name);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -113,7 +113,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_role_id", roles.Role_Id);
                 parameters.Add("@_role_name", roles.Role_Name);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }

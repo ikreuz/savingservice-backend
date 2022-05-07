@@ -22,7 +22,7 @@ namespace SavingService.Services.WebApi.Controllers
 
         [HttpPost("insert")]
         public IActionResult Insert([FromBody] RolesDto rolesDto)
-        {
+       {
             if (rolesDto == null) return BadRequest();
 
             var response = _rolesApplication.Insert(rolesDto);
@@ -81,7 +81,7 @@ namespace SavingService.Services.WebApi.Controllers
 
         #region Asynchronous Methods
 
-        [HttpPost("insertAsync{rolesDto}")]
+        [HttpPost("insertAsync")]
         public async Task<IActionResult> InsertAsync([FromBody] RolesDto rolesDto)
         {
             if (rolesDto == null) return BadRequest();
@@ -93,7 +93,7 @@ namespace SavingService.Services.WebApi.Controllers
             return BadRequest(response.Message);
         }
 
-        [HttpPut("updateAsync/{rolesDto}")]
+        [HttpPut("updateAsync")]
         public async Task<IActionResult> UpdateAsync([FromBody] RolesDto rolesDto)
         {
             if (rolesDto == null) return BadRequest();
