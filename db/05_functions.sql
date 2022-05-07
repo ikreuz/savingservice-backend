@@ -10,21 +10,31 @@ OBJETIVO:
 RETORNA:
 ******************************************************************************/
 DECLARE
-    __RW     integer;
-    __return integer := -1;
+    __RW          integer;
+    __tmp_role_id roles.role_id%TYPE;
+    __return      integer := -1;
 BEGIN
-
-    INSERT INTO roles (role_id, role_name)
-    VALUES (_role_id, _role_name);
-
-    GET DIAGNOSTICS __RW = ROW_COUNT;
-
-    IF __RW = 1 THEN
-        __return := 1;
+    IF (select exists(select 1 from roles where role_id = _role_id)) THEN
+        __return := -2; --- ya existe
     ELSE
-        __return := -1;
+        __return := 1;
     END IF;
 
+    IF __return = 1 THEN
+
+        INSERT INTO roles (role_id, role_name)
+        VALUES (_role_id, _role_name);
+
+        GET DIAGNOSTICS __RW = ROW_COUNT;
+
+        IF __RW = 1 THEN
+            __tmp_role_id = (SELECT nextval('roles_id_seq'));
+
+            __return := __tmp_role_id;
+        ELSE
+            __return := 1;
+        END IF;
+    END IF;
     RETURN __return;
 END
 $$;
@@ -442,17 +452,17 @@ alter function fn_personal_actualizar( integer, integer, varchar, varchar,
 create or replace function fn_personal_obtener_listado()
     RETURNS TABLE
             (
-                personal_id      integer,
-                user_access_id   integer,
-                apellidos        character varying,
-                nombre           character varying,
-                funcion_id       integer,
-                fh_registro      timestamptz,
-                fh_modificacion  timestamptz,
-                fh_autorizacion  timestamptz,
-                usr_registra_id  integer,
-                usr_modifica_id  integer,
-                usr_autoriza_id  integer
+                personal_id     integer,
+                user_access_id  integer,
+                apellidos       character varying,
+                nombre          character varying,
+                funcion_id      integer,
+                fh_registro     timestamptz,
+                fh_modificacion timestamptz,
+                fh_autorizacion timestamptz,
+                usr_registra_id integer,
+                usr_modifica_id integer,
+                usr_autoriza_id integer
             )
     language plpgsql
 as

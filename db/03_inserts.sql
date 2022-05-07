@@ -15,7 +15,8 @@ VALUES (3, 'Cliente');
 -- --
 INSERT INTO usuario(usuario_id, nombre, apellidos, correo, nombre_usuario, fh_registro, fh_modificacion,
                     usr_registra_id, usr_modifica_id)
-VALUES (1, 'Camina', 'Drummer', 'drummer.app@fake.com', 'drummer', NOW()::timestamptz,
+VALUES (1, 'Camina', 'Drummer', 'drummer.app@fake.com', 'drummer',
+        NOW()::timestamptz,
         CURRENT_TIMESTAMP, 1, 0);
 
 INSERT INTO usuario(usuario_id, nombre, apellidos, correo, nombre_usuario, fh_registro, fh_modificacion,
@@ -32,17 +33,23 @@ VALUES (3, 'Diana', 'Kurkova', 'diana.app@fake.com', 'diana', NOW()::timestamptz
 
 INSERT INTO tower(tower_id, role_id, usuario_id, mid, auth, pass, is_staff, fh_registro,
                   fh_modificacion, usr_registra_id, usr_modifica_id)
-VALUES (1, 1, 1, '67e276d4-7d6c-8330-c823-7d62ccd35a95', '00xyZfb/XlxROoNOz2AOXjw+cT/+YJfI8nAZ7t6Z7ew=',
+VALUES (1, 1,
+        1,
+        '67e276d4-7d6c-8330-c823-7d62ccd35a95', '00xyZfb/XlxROoNOz2AOXjw+cT/+YJfI8nAZ7t6Z7ew=',
         'wQskObIJVpTiMXiiDkbmAw==', 1, NOW()::TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
 
 INSERT INTO tower(tower_id, role_id, usuario_id, mid, auth, pass, is_staff, fh_registro,
                   fh_modificacion, usr_registra_id, usr_modifica_id)
-VALUES (2, 2, 2, '4c6e6b25-a2fe-6041-df62-b8e28533b5ab', '00c9mMkz/n50VYQUyvEAzEdW+1o1Fk9FALeZhnQy7LM=',
+VALUES (2, 2,
+        2,
+        '4c6e6b25-a2fe-6041-df62-b8e28533b5ab', '00c9mMkz/n50VYQUyvEAzEdW+1o1Fk9FALeZhnQy7LM=',
         'wQskObIJVpTiMXiiDkbmAw==', 1, NOW()::TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
 
 INSERT INTO tower(tower_id, role_id, usuario_id, mid, auth, pass, is_staff, fh_registro,
                   fh_modificacion, usr_registra_id, usr_modifica_id)
-VALUES (3, 3, 3, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', '00qBdp3bUt0TyupDiCJuA7iIhPJMRCS5C78qoIK09vo=',
+VALUES (3, 3,
+        3, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f',
+        '00qBdp3bUt0TyupDiCJuA7iIhPJMRCS5C78qoIK09vo=',
         'wQskObIJVpTiMXiiDkbmAw==', 1, NOW()::TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
 -- --
 -- --
@@ -50,7 +57,8 @@ VALUES (3, 3, 3, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', '00qBdp3bUt0TyupDiCJuA7
 INSERT INTO user_access(user_access_id, usuario_id, mid, auth, created_at, last_login, activity_status, is_staff,
                         operation_id, operation_context_id, fh_registro, fh_modificacion, fh_activacion,
                         usr_registra_id, usr_modifica_id, usr_activa_id)
-VALUES (1, 1, '67e276d4-7d6c-8330-c823-7d62ccd35a95', '00xyZfb/XlxROoNOz2AOXjw+cT/+YJfI8nAZ7t6Z7ew=',
+VALUES (1, 1,
+        '67e276d4-7d6c-8330-c823-7d62ccd35a95', '00xyZfb/XlxROoNOz2AOXjw+cT/+YJfI8nAZ7t6Z7ew=',
         NOW()::timestamptz, NOW()::timestamptz, false, 1, 1542, 1562, NOW()::timestamptz, NOW()::timestamptz,
         NOW()::timestamptz,
         1, 1, 0);
@@ -58,7 +66,8 @@ VALUES (1, 1, '67e276d4-7d6c-8330-c823-7d62ccd35a95', '00xyZfb/XlxROoNOz2AOXjw+c
 INSERT INTO user_access(user_access_id, usuario_id, mid, auth, created_at, last_login, activity_status, is_staff,
                         operation_id, operation_context_id, fh_registro, fh_modificacion, fh_activacion,
                         usr_registra_id, usr_modifica_id, usr_activa_id)
-VALUES (2, 2, '4c6e6b25-a2fe-6041-df62-b8e28533b5ab', '00c9mMkz/n50VYQUyvEAzEdW+1o1Fk9FALeZhnQy7LM=',
+VALUES (2, 2,
+        '4c6e6b25-a2fe-6041-df62-b8e28533b5ab', '00c9mMkz/n50VYQUyvEAzEdW+1o1Fk9FALeZhnQy7LM=',
         NOW()::timestamptz, NOW()::timestamptz, false, 1, 1542, 1562, NOW()::timestamptz, NOW()::timestamptz,
         NOW()::timestamptz,
         1, 1, 0);
@@ -66,7 +75,8 @@ VALUES (2, 2, '4c6e6b25-a2fe-6041-df62-b8e28533b5ab', '00c9mMkz/n50VYQUyvEAzEdW+
 INSERT INTO user_access(user_access_id, usuario_id, mid, auth, created_at, last_login, activity_status, is_staff,
                         operation_id, operation_context_id, fh_registro, fh_modificacion, fh_activacion,
                         usr_registra_id, usr_modifica_id, usr_activa_id)
-VALUES (3, 3, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', '00qBdp3bUt0TyupDiCJuA7iIhPJMRCS5C78qoIK09vo=',
+VALUES (3, 3,
+        '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', '00qBdp3bUt0TyupDiCJuA7iIhPJMRCS5C78qoIK09vo=',
         NOW()::timestamptz, NOW()::timestamptz, false, 2, 1542, 1562, NOW()::timestamptz, NOW()::timestamptz,
         NOW()::timestamptz,
         1, 1, 0);
@@ -76,18 +86,22 @@ VALUES (3, 3, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', '00qBdp3bUt0TyupDiCJuA7iIh
 -- --
 INSERT INTO personal(personal_id, user_access_id, apellidos, nombre, sucursal_id, funcion_id,
                      fh_registro, fh_autorizacion, fh_modificacion, usr_registra_id, usr_autoriza_id, usr_modifica_id)
-VALUES (1, 1, 'Camina', 'Drummer', 1, 39, NOW()::timestamptz, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0, 0);
+VALUES (1, 1, 'Camina', 'Drummer', 1, 39,
+        NOW()::timestamptz, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0, 0);
 
 INSERT INTO personal(personal_id, user_access_id, apellidos, nombre, sucursal_id, funcion_id,
                      fh_registro, fh_autorizacion, fh_modificacion, usr_registra_id, usr_autoriza_id, usr_modifica_id)
-VALUES (2, 2, 'James', 'Dean', 1, 40, NOW()::timestamptz, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0, 0);
+VALUES (2, 2, 'James', 'Dean', 1, 40,
+        NOW()::timestamptz, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0, 0);
 
 -- --
 -- --
 -- --
 INSERT INTO cliente(cliente_id, user_access_id, sucursal_id, nombre, apellidos, correo, tel_1, c_credito, c_ahorro,
                     fh_registro, fh_modificacion, fh_autorizacion, usr_registra_id, usr_modifica_id, usr_autoriza_id)
-VALUES (1, 3, 1, 'Diana', 'Natasha', '', '', false, false, NOW()::timestamptz, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1,
+VALUES (1, 3,
+        1, 'Diana', 'Natasha', '', '', false, false, NOW()::timestamptz,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1,
         0, 0);
 
 
@@ -141,7 +155,8 @@ INSERT INTO sucursal (sucursal_id, sucursal_status, sucursal_cancelada, residenc
                       entidad_id, nombre_sucursal, abr_sucursal, direccion, telefono, cuentas_correo, fh_registro,
                       fh_modificacion, fh_cancelacion, fh_activacion, usr_registra_id, usr_modifica_id,
                       usr_cancela_id, usr_activa_id)
-VALUES (1, false, false, 4003, 17, 'Guadalajara', 'JAL', 'Division del Norte', '123456789', 'saving.app@fake.com ',
+VALUES (1, false, false, 4003, 17, 'Guadalajara', 'JAL', 'Division del Norte',
+        '123456789', 'saving.app@fake.com ',
         NOW()::timestamptz, NOW()::timestamptz, NOW()::timestamptz, NOW()::timestamptz, 1, 0, 0, 0);
 
 
