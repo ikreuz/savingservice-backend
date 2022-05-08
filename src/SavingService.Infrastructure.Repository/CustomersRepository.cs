@@ -80,11 +80,11 @@ namespace SavingService.Infrastructure.Repository
         {
             using (var connection = _connectionFactory.GetConnection)
             {
-                var query = _pathToQuery + "_eliminar";
+                var query = _pathToQuery + "_eliminar_id";
                 var parameters = new DynamicParameters();
                 parameters.Add("@_cliente_id", customerId);
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -110,6 +110,33 @@ namespace SavingService.Infrastructure.Repository
 
                 var customers = connection.Query<Customers>(query, commandType: CommandType.StoredProcedure);
                 return customers;
+            }
+        }
+
+        public Guid GetGuid(int customerId)
+        {
+            using (var connection = _connectionFactory.GetConnection)
+            {
+                var query = _pathToQuery + "_conseguir_mid";
+
+                var paremeters = new DynamicParameters();
+
+                paremeters.Add("@_cliente_id", customerId);
+
+                var result = connection.QuerySingle<Guid>(query, param: paremeters, commandType: CommandType.StoredProcedure);
+
+                return result;
+            }
+        }
+
+        public int GetLast()
+        {
+            using(var connection = _connectionFactory.GetConnection)
+            {
+                var query = _pathToQuery + "_obtener_ultimo_id";
+
+                var customer = connection.QuerySingle<int>(query, commandType: CommandType.StoredProcedure);
+                return customer;
             }
         }
         #endregion
@@ -176,11 +203,11 @@ namespace SavingService.Infrastructure.Repository
         {
             using (var connection = _connectionFactory.GetConnection)
             {
-                var query = _pathToQuery + "_eliminar";
+                var query = _pathToQuery + "_eliminar_id";
                 var parameters = new DynamicParameters();
                 parameters.Add("@_cliente_id", customerId);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }

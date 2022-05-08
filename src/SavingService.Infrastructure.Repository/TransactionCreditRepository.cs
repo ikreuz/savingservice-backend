@@ -80,7 +80,7 @@ namespace SavingService.Infrastructure.Repository
                 var parameters = new DynamicParameters();
                 parameters.Add("@_credit_id", transactionCreditId);
 
-                var customer = connection.QuerySingle<TransactionCredit>(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var customer = connection.QueryFirstOrDefault<TransactionCredit>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return customer;
             }
         }
@@ -145,7 +145,7 @@ namespace SavingService.Infrastructure.Repository
                 var parameters = new DynamicParameters();
                 parameters.Add("@_credit_id", transactionCreditId);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }

@@ -130,6 +130,22 @@ END ;
 $$;
 alter function fn_rol_obtener_id(integer) owner to postgres;
 
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_rol_obtener_ultimo_id()
+    RETURNS integer
+    language plpgsql
+AS
+$$
+/******************************************************************************
+NOMBRE: fn_rol_obtener_ultimo_id
+OBJETIVO: Busca un usuario por id.
+******************************************************************************/
+DECLARE
+BEGIN
+    RETURN (SELECT role_id AS role_id FROM roles ORDER BY role_id DESC LIMIT 1);
+END
+$$;
+alter function fn_rol_obtener_ultimo_id() owner to postgres;
 
 -- ----------------------------------------------------------------------------------- --
 -- Funcion eliminar un rol por id
@@ -321,6 +337,23 @@ BEGIN
 END;
 $$;
 alter function fn_usuario_obtener_id(integer) owner to postgres;
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_usuario_obtener_ultimo_id()
+    RETURNS integer
+    language plpgsql
+AS
+$$
+/******************************************************************************
+NOMBRE: fn_usuario_obtener_ultimo_id
+OBJETIVO:
+******************************************************************************/
+DECLARE
+BEGIN
+    RETURN (SELECT usuario_id AS usuario_id FROM usuario ORDER BY usuario_id DESC LIMIT 1);
+END
+$$;
+alter function fn_usuario_obtener_ultimo_id() owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
@@ -558,6 +591,23 @@ END;
 $$;
 alter function fn_personal_conseguir_mid(integer) owner to postgres;
 
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_personal_obtener_ultimo_id()
+    RETURNS integer
+    language plpgsql
+AS
+$$
+/******************************************************************************
+NOMBRE: fn_personal_obtener_ultimo_id
+OBJETIVO:
+******************************************************************************/
+DECLARE
+BEGIN
+    RETURN (SELECT personal_id AS personal_id FROM personal ORDER BY personal_id DESC LIMIT 1);
+END
+$$;
+alter function fn_personal_obtener_ultimo_id() owner to postgres;
+
 
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_personal_eliminar_id(_personal_id integer) returns integer
@@ -716,6 +766,69 @@ END;
 $$;
 alter function fn_cliente_obtener_id(integer) owner to postgres;
 
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_cliente_conseguir_user_access_id(_cliente_id integer) returns integer
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_cliente_conseguir_user_access_id
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __exist  integer := 1;
+    __return integer := -1;
+BEGIN
+    IF (select exists(select 1 from cliente where cliente_id = _cliente_id)) THEN
+        __exist := 1;
+    ELSE
+        __exist := -2;
+    END IF;
+
+    IF __exist = 1 THEN
+        RETURN (SELECT user_access_id AS user_access_id FROM cliente WHERE cliente_id = _cliente_id);
+    ELSE
+        RETURN __return;
+    END IF;
+END;
+$$;
+alter function fn_cliente_conseguir_user_access_id(integer) owner to postgres;
+
+SELECT * FROM fn_cliente_conseguir_mid(3)
+create or replace function fn_cliente_conseguir_mid(_cliente_id integer) returns uuid
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_cliente_conseguir_mid
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __exist  integer := 1;
+    __return uuid := uuid_nil();
+BEGIN
+    IF (select exists(select 1 from cliente where cliente_id = _cliente_id)) THEN
+        __exist := 1;
+    ELSE
+        __exist := -2;
+    END IF;
+
+    IF __exist = 1 THEN
+        RETURN (SELECT mid AS mid
+                FROM user_access
+                WHERE user_access_id = fn_personal_conseguir_user_access_id(_cliente_id));
+    ELSE
+        RETURN __return;
+    END IF;
+END;
+$$;
+alter function fn_cliente_conseguir_mid(integer) owner to postgres;
+
+
+
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_cliente_obtener_listado()
     returns TABLE
@@ -773,6 +886,24 @@ BEGIN
 END;
 $$;
 alter function fn_cliente_obtener_listado() owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_cliente_obtener_ultimo_id()
+    RETURNS integer
+    language plpgsql
+AS
+$$
+/******************************************************************************
+NOMBRE: fn_cliente_obtener_ultimo_id
+OBJETIVO:
+******************************************************************************/
+DECLARE
+BEGIN
+    RETURN (SELECT cliente_id AS cliente_id FROM cliente ORDER BY cliente_id DESC LIMIT 1);
+END
+$$;
+alter function fn_cliente_obtener_ultimo_id() owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
@@ -961,6 +1092,24 @@ BEGIN
 END;
 $$;
 alter function fn_transaccion_obtener_listado() owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_transaccion_obtener_ultimo_id()
+    RETURNS integer
+    language plpgsql
+AS
+$$
+/******************************************************************************
+NOMBRE: fn_transaccion_obtener_ultimo_id
+OBJETIVO:
+******************************************************************************/
+DECLARE
+BEGIN
+    RETURN (SELECT transaction_id AS transaction_id FROM transaction ORDER BY transaction_id DESC LIMIT 1);
+END
+$$;
+alter function fn_transaccion_obtener_ultimo_id() owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
@@ -1161,6 +1310,24 @@ alter function fn_transaction_credit_obtener_listado() owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
+create or replace function fn_transaction_credit_obtener_ultimo_id()
+    RETURNS integer
+    language plpgsql
+AS
+$$
+/******************************************************************************
+NOMBRE: fn_transaction_credit_obtener_ultimo_id
+OBJETIVO:
+******************************************************************************/
+DECLARE
+BEGIN
+    RETURN (SELECT credit_id AS credit_id FROM transaction_credit ORDER BY credit_id DESC LIMIT 1);
+END
+$$;
+alter function fn_transaction_credit_obtener_ultimo_id() owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_credit_eliminar_id(_credit_id integer) returns integer
     language plpgsql
 as
@@ -1349,6 +1516,26 @@ $$;
 alter function fn_transaction_saving_obtener_listado() owner to postgres;
 
 
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_transaction_saving_obtener_ultimo_id()
+    RETURNS integer
+    language plpgsql
+AS
+$$
+/******************************************************************************
+NOMBRE: fn_transaction_saving_obtener_ultimo_id
+OBJETIVO:
+******************************************************************************/
+DECLARE
+BEGIN
+    RETURN (SELECT saving_id AS saving_id FROM transaction_saving ORDER BY saving_id DESC LIMIT 1);
+END
+$$;
+alter function fn_transaction_saving_obtener_ultimo_id() owner to postgres;
+
+
+
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_saving_eliminar_id(_saving_id integer) returns integer
     language plpgsql
@@ -1376,3 +1563,218 @@ BEGIN
 END;
 $$;
 alter function fn_transaction_saving_eliminar_id(integer) owner to postgres;
+
+
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_tower_insertar(
+    _tower_id integer, _role_id integer, _usuario_id integer, _mid uuid, _auth character varying,
+    _pass character varying, _is_staff integer, _fh_registro timestamptz, _fh_modificacion timestamptz,
+    _usr_registra_id integer, _usr_modifica_id integer
+) returns integer
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_tower_insertar
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __RW           integer;
+    __tmp_tower_id tower.tower_id%TYPE;
+    __return       integer := -1;
+BEGIN
+
+    INSERT INTO tower(tower_id, role_id, usuario_id, mid, auth, pass, is_staff,
+                      fh_registro, fh_modificacion, usr_registra_id, usr_modifica_id)
+    VALUES (_tower_id, _role_id, _usuario_id, _mid, _auth, _pass, _is_staff, _fh_registro,
+            _fh_modificacion, _usr_registra_id, _usr_modifica_id);
+
+    GET DIAGNOSTICS __RW = ROW_COUNT;
+
+    IF __RW = 1 THEN
+        __tmp_tower_id = (SELECT nextval('tower_id_seq'));
+
+        __return := __tmp_tower_id;
+    ELSE
+        __return := -1;
+    END IF;
+
+    RETURN __return;
+END
+$$;
+alter function fn_tower_insertar(
+    integer, integer, integer, uuid, character varying,
+    character varying, integer, timestamptz, timestamptz, integer, integer
+    ) owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_tower_actualizar(
+    _tower_id integer, _role_id integer, _usuario_id integer, _mid uuid, _auth character varying,
+    _pass character varying, _is_staff integer, _fh_registro timestamptz, _fh_modificacion timestamptz,
+    _usr_registra_id integer, _usr_modifica_id integer
+) returns integer
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_tower_actualizar
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __RW     integer;
+    __return integer := -1;
+BEGIN
+
+    UPDATE transaction_saving
+    SET role_id         =_role_id,
+        usuario_id=_usuario_id,
+        mid=_mid,
+        auth=_auth,
+        pass            =_pass,
+        is_staff=_is_staff,
+        fh_registro=_fh_registro,
+        fh_modificacion=_fh_modificacion,
+        usr_registra_id =_usr_registra_id,
+        usr_modifica_id= _usr_modifica_id
+    WHERE tower_id = _tower_id;
+
+    GET DIAGNOSTICS __RW = ROW_COUNT;
+
+    IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
+        __return := 1;
+    ELSE
+        __return := -2;
+    END IF;
+
+    RETURN __return;
+END
+$$;
+alter function fn_tower_actualizar(
+    integer, integer, integer, uuid, character varying,
+    character varying, integer, timestamptz, timestamptz, integer, integer
+    ) owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_tower_obtener_id(_tower_id integer)
+    returns SETOF vw_tower
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_tower_obtener_id
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __record vw_tower;
+BEGIN
+    FOR __record IN SELECT * FROM vw_tower WHERE tower_id = _tower_id
+        LOOP
+            RETURN NEXT __record;
+        END LOOP;
+END;
+$$;
+alter function fn_tower_obtener_id(integer) owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_tower_obtener_listado()
+    returns TABLE
+            (
+                tower_id        integer,
+                role_id         integer,
+                usuario_id      integer,
+                mid             uuid,
+                auth            character varying,
+                pass            character varying,
+                is_staff        integer,
+                fh_registro     timestamptz,
+                fh_modificacion timestamptz,
+                usr_registra_id integer,
+                usr_modifica_id integer
+            )
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_tower_obtener_listado
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __record record;
+    __query  text;
+BEGIN
+
+    __query := 'SELECT * FROM vw_tower ORDER BY tower_id DESC';
+
+    FOR __record IN EXECUTE __query
+        LOOP
+            tower_id := __record.tower_id;
+            role_id := __record.role_id;
+            usuario_id := __record.usuario_id;
+            mid := __record.mid;
+            auth := __record.auth;
+            pass := __record.pass;
+            is_staff := __record.is_staff;
+            fh_registro := __record.fh_registro;
+            fh_modificacion := __record.fh_modificacion;
+            usr_registra_id := __record.usr_registra_id;
+            usr_modifica_id := __record.usr_modifica_id;
+            RETURN NEXT;
+        END LOOP;
+END;
+$$;
+alter function fn_tower_obtener_listado() owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_tower_obtener_ultimo_id()
+    RETURNS integer
+    language plpgsql
+AS
+$$
+/******************************************************************************
+NOMBRE: fn_tower_obtener_ultimo_id
+OBJETIVO:
+******************************************************************************/
+DECLARE
+BEGIN
+    RETURN (SELECT tower_id AS tower_id FROM tower ORDER BY tower_id DESC LIMIT 1);
+END
+$$;
+alter function fn_tower_obtener_ultimo_id() owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_tower_eliminar_id(_tower_id integer) returns integer
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_tower_eliminar_id
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __RW     integer;
+    __return integer := -1;
+BEGIN
+    DELETE FROM tower WHERE tower_id = _tower_id;
+    GET DIAGNOSTICS __RW = ROW_COUNT;
+
+    IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
+        __return := 1;
+    ELSE
+        __return := -2;
+    END IF;
+
+    RETURN __return;
+END;
+$$;
+alter function fn_tower_eliminar_id(integer) owner to postgres;

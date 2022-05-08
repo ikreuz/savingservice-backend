@@ -36,6 +36,7 @@ namespace SavingService.CrossCutting.Mapper
             CreateMap<Transaction, TransactionDto>().ReverseMap();
             CreateMap<TransactionCredit, TransactionCreditDto>().ReverseMap();
             CreateMap<TransactionSaving, TransactionSavingDto>().ReverseMap();
+            CreateMap<Tower, TowerDto>().ReverseMap();
         }
     }
 }

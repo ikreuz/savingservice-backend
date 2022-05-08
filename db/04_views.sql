@@ -339,4 +339,24 @@ alter table vw_transaccion_ahorro
     owner to postgres;
 
 
+create or replace view vw_tower
+            (tower_id, role_id, usuario_id, mid, auth, pass, is_staff,
+             fh_registro, fh_modificacion, usr_registra_id, usr_modifica_id)
+as
+SELECT t.tower_id,
+       t.role_id,
+       t.usuario_id,
+       t.mid,
+       t.auth,
+       t.pass,
+       t.is_staff,
+       t.fh_registro,
+       t.fh_modificacion,
+       t.usr_registra_id,
+       t.usr_modifica_id
+
+FROM tower t;
+
+alter table vw_tower
+    owner to postgres;
 

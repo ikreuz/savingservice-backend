@@ -69,7 +69,7 @@ namespace SavingService.Infrastructure.Repository
                 var parameters = new DynamicParameters();
                 parameters.Add("@_transaction_id", customerId);
 
-                var result = connection.Execute(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }
@@ -149,7 +149,7 @@ namespace SavingService.Infrastructure.Repository
                 var parameters = new DynamicParameters();
                 parameters.Add("@_transaction_id", customerId);
 
-                var result = await connection.ExecuteAsync(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
             }
         }

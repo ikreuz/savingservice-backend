@@ -15,6 +15,9 @@ namespace SavingService.Domain.Interface
 
         Customers Get(int customerId);
         IEnumerable<Customers> GetAll();
+
+        Guid GetGuid(int customerId);
+        int GetLast();
         #endregion
 
 

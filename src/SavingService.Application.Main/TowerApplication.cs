@@ -11,171 +11,26 @@ using System.Threading.Tasks;
 
 namespace SavingService.Application.Main
 {
-    public class CustomersApplication : ICustomersApplication
+    public class TowerApplication : ITowerApplication
     {
-        private readonly ICustomersDomain _customersDomain;
+        private readonly ITowerDomain _towerDomain;
         private readonly IMapper _mapper;
-        public CustomersApplication(ICustomersDomain customersDomain, IMapper mapper)
+
+        public TowerApplication(ITowerDomain towerDomain, IMapper mapper)
         {
-            _customersDomain = customersDomain;
+            _towerDomain = towerDomain;
             _mapper = mapper;
         }
 
         #region Métodos Síncronos
 
-        public Response<bool> Insert(CustomersDto customersDto)
+        public Response<bool> Insert(TowerDto towerDto)
         {
             var response = new Response<bool>();
             try
             {
-                var findCustomer = _customersDomain.GetGuid(customersDto.Cliente_Id);
-                
-                if (findCustomer == Guid.Empty || findCustomer == null)
-                {
-                    var customer = _mapper.Map<Customers>(customersDto);
-                    response.Data = _customersDomain.Insert(customer);
-                    if (response.Data)
-                    {
-                        response.IsSuccess = true;
-                        response.Message = "Successful registration!";
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                response.Message = e.Message;
-            }
-            return response;
-        }
-
-        public Response<bool> Update(CustomersDto customersDto)
-        {
-            var response = new Response<bool>();
-            try
-            {
-                var customer = _mapper.Map<Customers>(customersDto);
-                response.Data = _customersDomain.Update(customer);
-                if (response.Data)
-                {
-                    response.IsSuccess = true;
-                    response.Message = "Successful update!";
-                }
-            }
-            catch (Exception e)
-            {
-                response.Message = e.Message;
-            }
-            return response;
-        }
-
-        public Response<bool> Delete(int customerId)
-        {
-            var response = new Response<bool>();
-            try
-            {
-                response.Data = _customersDomain.Delete(customerId);
-                if (response.Data)
-                {
-                    response.IsSuccess = true;
-                    response.Message = "Successful removal!";
-                }
-            }
-            catch (Exception e)
-            {
-                response.Message = e.Message;
-            }
-            return response;
-        }
-
-        public Response<CustomersDto> Get(int customerId)
-        {
-            var response = new Response<CustomersDto>();
-            try
-            {
-                var customer = _customersDomain.Get(customerId);
-                response.Data = _mapper.Map<CustomersDto>(customer);
-                if (response.Data != null)
-                {
-                    response.IsSuccess = true;
-                    response.Message = "Successful query!";
-                }
-            }
-            catch (Exception e)
-            {
-                response.Message = e.Message;
-            }
-            return response;
-        }
-
-        public Response<IEnumerable<CustomersDto>> GetAll()
-        {
-            var response = new Response<IEnumerable<CustomersDto>>();
-            try
-            {
-                var customers = _customersDomain.GetAll();
-                response.Data = _mapper.Map<IEnumerable<CustomersDto>>(customers);
-                if (response.Data != null)
-                {
-                    response.IsSuccess = true;
-                    response.Message = "Successful query!";
-                }
-            }
-            catch (Exception e)
-            {
-                response.Message = e.Message;
-            }
-            return response;
-        }
-
-        public Response<Guid> GetGuid(int customerId)
-        {
-            var response = new Response<Guid>();
-            try
-            {
-                var customer = _customersDomain.GetGuid(customerId);
-                response.Data = _mapper.Map<Guid>(customer);
-                if (response.Data != null)
-                {
-                    response.IsSuccess = true;
-                    response.Message = "Successful";
-                }
-            }
-            catch (Exception e)
-            {
-                response.Message = e.Message;
-            }
-            return response;
-        }
-
-        public Response<int> GetLast()
-        {
-            var response = new Response<int>();
-            try
-            {
-                var customer = _customersDomain.GetLast();
-                response.Data = _mapper.Map<int>(customer);
-                if(response.Data > 0)
-                {
-                    response.IsSuccess = true;
-                    response.Message = "Successful";
-                }
-            }
-            catch (Exception e)
-            {
-                response.Message = e.Message;
-            }
-            return response;
-        }
-        #endregion
-
-        #region Métodos Asíncronos
-        public async Task<Response<bool>> InsertAsync(CustomersDto customersDto)
-        {
-            var response = new Response<bool>();
-            try
-            {
-                var customer = _mapper.Map<Customers>(customersDto);
-                response.Data = await _customersDomain.InsertAsync(customer);
+                var transaction = _mapper.Map<Tower>(towerDto);
+                response.Data = _towerDomain.Insert(transaction);
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -188,13 +43,14 @@ namespace SavingService.Application.Main
             }
             return response;
         }
-        public async Task<Response<bool>> UpdateAsync(CustomersDto customersDto)
+
+        public Response<bool> Update(TowerDto towerDto)
         {
             var response = new Response<bool>();
             try
             {
-                var customer = _mapper.Map<Customers>(customersDto);
-                response.Data = await _customersDomain.UpdateAsync(customer);
+                var transaction = _mapper.Map<Tower>(towerDto);
+                response.Data = _towerDomain.Update(transaction);
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -208,12 +64,12 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public async Task<Response<bool>> DeleteAsync(int customerId)
+        public Response<bool> Delete(int userDataId)
         {
             var response = new Response<bool>();
             try
             {
-                response.Data = await _customersDomain.DeleteAsync(customerId);
+                response.Data = _towerDomain.Delete(userDataId);
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -227,13 +83,13 @@ namespace SavingService.Application.Main
             return response;
         }
 
-        public async Task<Response<CustomersDto>> GetAsync(int customerId)
+        public Response<TowerDto> Get(int userDataId)
         {
-            var response = new Response<CustomersDto>();
+            var response = new Response<TowerDto>();
             try
             {
-                var customer = await _customersDomain.GetAsync(customerId);
-                response.Data = _mapper.Map<CustomersDto>(customer);
+                var transaction = _towerDomain.Get(userDataId);
+                response.Data = _mapper.Map<TowerDto>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;
@@ -246,13 +102,114 @@ namespace SavingService.Application.Main
             }
             return response;
         }
-        public async Task<Response<IEnumerable<CustomersDto>>> GetAllAsync()
+
+        public Response<IEnumerable<TowerDto>> GetAll()
         {
-            var response = new Response<IEnumerable<CustomersDto>>();
+            var response = new Response<IEnumerable<TowerDto>>();
             try
             {
-                var customers = await _customersDomain.GetAllAsync();
-                response.Data = _mapper.Map<IEnumerable<CustomersDto>>(customers);
+                var transaction = _towerDomain.GetAll();
+                response.Data = _mapper.Map<IEnumerable<TowerDto>>(transaction);
+                if (response.Data != null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful query!";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
+        #endregion
+
+        #region Métodos Asíncronos
+        public async Task<Response<bool>> InsertAsync(TowerDto towerDto)
+        {
+            var response = new Response<bool>();
+            try
+            {
+                var transaction = _mapper.Map<Tower>(towerDto);
+                response.Data = await _towerDomain.InsertAsync(transaction);
+                if (response.Data)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful registration!";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+        public async Task<Response<bool>> UpdateAsync(TowerDto towerDto)
+        {
+            var response = new Response<bool>();
+            try
+            {
+                var transaction = _mapper.Map<Tower>(towerDto);
+                response.Data = await _towerDomain.UpdateAsync(transaction);
+                if (response.Data)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful update!";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<Response<bool>> DeleteAsync(int userDataId)
+        {
+            var response = new Response<bool>();
+            try
+            {
+                response.Data = await _towerDomain.DeleteAsync(userDataId);
+                if (response.Data)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful removal!";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
+        public async Task<Response<TowerDto>> GetAsync(int userDataId)
+        {
+            var response = new Response<TowerDto>();
+            try
+            {
+                var transaction = await _towerDomain.GetAsync(userDataId);
+                response.Data = _mapper.Map<TowerDto>(transaction);
+                if (response.Data != null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful query!";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+        public async Task<Response<IEnumerable<TowerDto>>> GetAllAsync()
+        {
+            var response = new Response<IEnumerable<TowerDto>>();
+            try
+            {
+                var transaction = await _towerDomain.GetAllAsync();
+                response.Data = _mapper.Map<IEnumerable<TowerDto>>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;

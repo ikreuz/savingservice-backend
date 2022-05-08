@@ -1,3 +1,7 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- SELECT uuid_generate_v4();
+
+
 create sequence roles_id_seq;
 alter sequence roles_id_seq owner to postgres;
 create table roles
@@ -164,8 +168,8 @@ create table transaction
     fh_modificacion timestamptz      default NOW()::timestamptz,
     usr_registra_id integer not null default 0,
     usr_modifica_id integer not null default 0,
-    constraint transaction_key primary key (transaction_id),
-    foreign key (cliente_id) references cliente (cliente_id)
+    constraint transaction_key primary key (transaction_id)
+--     foreign key (cliente_id) references cliente (cliente_id)
 );
 
 alter table transaction

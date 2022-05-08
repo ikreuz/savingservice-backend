@@ -78,6 +78,16 @@ namespace SavingService.Services.WebApi.Controllers
 
             return BadRequest(response.Message);
         }
+
+        [HttpGet("getlast")]
+        public IActionResult GetLastId()
+        {
+            var response = _customersApplication.GetLast();
+
+            if (response.IsSuccess) return Ok(response);
+
+            return BadRequest(response.Message);
+        }
         #endregion
 
         #region Asynchronous Methods

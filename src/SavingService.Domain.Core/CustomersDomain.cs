@@ -43,6 +43,15 @@ namespace SavingService.Domain.Core
             return _customersRepository.GetAll();
         }
 
+        public Guid GetGuid(int customerId)
+        {
+            return _customersRepository.GetGuid(customerId);
+        }
+
+        public int GetLast()
+        {
+            return _customersRepository.GetLast();
+        }
         #endregion
 
         #region Asynchronous Methods

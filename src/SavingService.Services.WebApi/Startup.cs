@@ -226,6 +226,13 @@ namespace SavingService.Services.WebApi
             services.AddScoped<ITransactionSavingApplication, TransactionSavingApplication>();
             services.AddScoped<ITransactionSavingDomain, TransactionSavingDomain>();
             services.AddScoped<ITransactionSavingRepository, TransactionSavingRepository>();
+
+            // Dependecy injection for transactionSaving
+            services.AddScoped<ITowerApplication, TowerApplication>();
+            services.AddScoped<ITowerDomain, TowerDomain>();
+            services.AddScoped<ITowerRepository, TowerRepository>();
+
+
             // Dependecy injection for logger
             //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
