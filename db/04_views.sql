@@ -156,7 +156,7 @@ alter table vw_conceptos
 
 
 create or replace view vw_cliente
-            (cliente_id, user_access_id, sucursal_id, nombre, apellidos, correo, tel_1, c_credito,
+            (cliente_id, user_access_id, sucursal_id, numero_cuenta, nombre, apellidos, correo, tel_1, c_credito,
              c_ahorro, fh_registro, fh_modificacion, fh_autorizacion, usr_registra_id, usr_modifica_id,
              usr_autoriza_id)
 as
@@ -168,6 +168,7 @@ select cliente.cliente_id,
        cliente.sucursal_id,
 --        s.abr_sucursal,
 --        (cliente.nombre::text || cliente.apellidos::text) as cliente,
+       cliente.numero_cuenta,
        cliente.nombre,
        cliente.apellidos,
        cliente.correo,

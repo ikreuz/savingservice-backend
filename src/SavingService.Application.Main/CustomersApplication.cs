@@ -29,7 +29,15 @@ namespace SavingService.Application.Main
             try
             {
                 var findCustomer = _customersDomain.GetGuid(customersDto.Cliente_Id);
+                var findCustomerLast = _customersDomain.GetLast();
+                var findLastUserAccess = _customersDomain.GetLastUserAccess();
                 
+                customersDto.Cliente_Id = findCustomerLast + 1;
+                
+                customersDto.User_Access_Id = findLastUserAccess + 1;
+
+                //var findUserAccess = _customersDomain.GetUserAccess(customersDto.Cliente_Id);
+
                 if (findCustomer == Guid.Empty || findCustomer == null)
                 {
                     var customer = _mapper.Map<Customers>(customersDto);
@@ -154,7 +162,46 @@ namespace SavingService.Application.Main
             {
                 var customer = _customersDomain.GetLast();
                 response.Data = _mapper.Map<int>(customer);
-                if(response.Data > 0)
+                if (response.Data > 0)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+        public Response<int> GetLastUserAccess()
+        {
+            var response = new Response<int>();
+            try
+            {
+                var customer = _customersDomain.GetLastUserAccess();
+                response.Data = _mapper.Map<int>(customer);
+                if (response.Data > 0)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
+        public Response<int> GetUserAccess(int customerId)
+        {
+            var response = new Response<int>();
+            try
+            {
+                var customer = _customersDomain.GetUserAccess(customerId);
+                response.Data = _mapper.Map<int>(customer);
+                if (response.Data > 0)
                 {
                     response.IsSuccess = true;
                     response.Message = "Successful";

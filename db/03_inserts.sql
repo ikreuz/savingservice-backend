@@ -97,10 +97,10 @@ VALUES (2, 2, 'James', 'Dean', 1, 40,
 -- --
 -- --
 -- --
-INSERT INTO cliente(cliente_id, user_access_id, sucursal_id, nombre, apellidos, correo, tel_1, c_credito, c_ahorro,
+INSERT INTO cliente(cliente_id, user_access_id, sucursal_id, numero_cuenta,  nombre, apellidos, correo, tel_1, c_credito, c_ahorro,
                     fh_registro, fh_modificacion, fh_autorizacion, usr_registra_id, usr_modifica_id, usr_autoriza_id)
 VALUES (1, 3,
-        1, 'Diana', 'Natasha', '', '', false, false, NOW()::timestamptz,
+        1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 'Diana', 'Natasha', '', '', false, false, NOW()::timestamptz,
         CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1,
         0, 0);
 

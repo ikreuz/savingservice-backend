@@ -18,6 +18,8 @@ namespace SavingService.Application.Interface
         Response<IEnumerable<CustomersDto>> GetAll();
         Response<Guid> GetGuid(int customerId);
         Response<int> GetLast();
+        Response<int> GetLastUserAccess();
+        Response<int> GetUserAccess(int customerId);
 
         #endregion
 

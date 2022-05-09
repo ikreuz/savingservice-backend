@@ -30,6 +30,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_cliente_id", customers.Cliente_Id);
                 parameters.Add("@_user_access_id", customers.User_Access_Id);
                 parameters.Add("@_sucursal_id", customers.Sucursal_Id);
+                parameters.Add("@_numero_cuenta", customers.Numero_Cuenta);
                 parameters.Add("@_nombre", customers.Nombre);
                 parameters.Add("@_apellidos", customers.Apellidos);
                 parameters.Add("@_correo", customers.Correo);
@@ -58,6 +59,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_cliente_id", customers.Cliente_Id);
                 parameters.Add("@_user_access_id", customers.User_Access_Id);
                 parameters.Add("@_sucursal_id", customers.Sucursal_Id);
+                parameters.Add("@_numero_cuenta", customers.Numero_Cuenta);
                 parameters.Add("@_nombre", customers.Nombre);
                 parameters.Add("@_apellidos", customers.Apellidos);
                 parameters.Add("@_correo", customers.Correo);
@@ -135,7 +137,32 @@ namespace SavingService.Infrastructure.Repository
             {
                 var query = _pathToQuery + "_obtener_ultimo_id";
 
-                var customer = connection.QuerySingle<int>(query, commandType: CommandType.StoredProcedure);
+                var customer = connection.QueryFirstOrDefault<int>(query, commandType: CommandType.StoredProcedure);
+                return customer;
+            }
+        }
+
+        public int GetLastUserAccess()
+        {
+            using (var connection = _connectionFactory.GetConnection)
+            {
+                var query = _pathToQuery + "_obtener_ultimo_user_access";
+
+                var customer = connection.QueryFirstOrDefault<int>(query, commandType: CommandType.StoredProcedure);
+                return customer;
+            }
+        }
+
+        public int GetUserAccess(int customerId)
+        {
+            using (var connection = _connectionFactory.GetConnection)
+            {
+                var query = _pathToQuery + "_conseguir_user_access_id";
+                var parameters = new DynamicParameters();
+                parameters.Add("@_cliente_id", customerId);
+
+                var customer = connection.QueryFirstOrDefault<int>(query, parameters, commandType: CommandType.StoredProcedure);
+                
                 return customer;
             }
         }
@@ -152,6 +179,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_cliente_id", customers.Cliente_Id);
                 parameters.Add("@_user_access_id", customers.User_Access_Id);
                 parameters.Add("@_sucursal_id", customers.Sucursal_Id);
+                parameters.Add("@_numero_cuenta", customers.Numero_Cuenta);
                 parameters.Add("@_nombre", customers.Nombre);
                 parameters.Add("@_apellidos", customers.Apellidos);
                 parameters.Add("@_correo", customers.Correo);
@@ -180,6 +208,7 @@ namespace SavingService.Infrastructure.Repository
                 parameters.Add("@_cliente_id", customers.Cliente_Id);
                 parameters.Add("@_user_access_id", customers.User_Access_Id);
                 parameters.Add("@_sucursal_id", customers.Sucursal_Id);
+                parameters.Add("@_numero_cuenta", customers.Numero_Cuenta);
                 parameters.Add("@_nombre", customers.Nombre);
                 parameters.Add("@_apellidos", customers.Apellidos);
                 parameters.Add("@_correo", customers.Correo);

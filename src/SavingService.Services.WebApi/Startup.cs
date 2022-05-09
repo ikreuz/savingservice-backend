@@ -105,7 +105,7 @@ namespace SavingService.Services.WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Parcel Service",
+                    Title = "Credit Service",
                     Description = "A simple example ASP.NET Core Web API",
                     TermsOfService = new Uri("https://savingservice/com/terms"),
                     Contact = new OpenApiContact

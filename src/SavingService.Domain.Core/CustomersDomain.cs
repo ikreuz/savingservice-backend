@@ -52,6 +52,14 @@ namespace SavingService.Domain.Core
         {
             return _customersRepository.GetLast();
         }
+        public int GetLastUserAccess()
+        {
+            return _customersRepository.GetLastUserAccess();
+        }
+        public int GetUserAccess(int customerId)
+        {
+            return _customersRepository.GetUserAccess(customerId);
+        }
         #endregion
 
         #region Asynchronous Methods

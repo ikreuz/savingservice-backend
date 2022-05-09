@@ -20,15 +20,15 @@ create sequence usuario_id_seq;
 alter sequence usuario_id_seq owner to postgres;
 create table usuario
 (
-    usuario_id      integer               not null default nextval('usuario_id_seq'::regclass),
-    nombre          character varying(30) not null default ''::character varying,
-    apellidos       character varying(60) not null default ''::character varying,
-    correo          character varying(50) not null default ''::character varying,
-    nombre_usuario  character varying(20) not null,
-    fh_registro     timestamptz                    default NOW()::timestamptz,
-    fh_modificacion timestamptz                    default NOW()::timestamptz,
-    usr_registra_id integer               not null default 0,
-    usr_modifica_id integer               not null default 0,
+    usuario_id      integer               default nextval('usuario_id_seq'::regclass),
+    nombre          character varying(30) default ''::character varying,
+    apellidos       character varying(60) default ''::character varying,
+    correo          character varying(50) default ''::character varying,
+    nombre_usuario  character varying(20),
+    fh_registro     timestamptz           default NOW()::timestamptz,
+    fh_modificacion timestamptz           default NOW()::timestamptz,
+    usr_registra_id integer               default 0,
+    usr_modifica_id integer               default 0,
     primary key (usuario_id),
     unique (usuario_id)
 );
@@ -39,17 +39,17 @@ create sequence tower_id_seq;
 alter sequence tower_id_seq owner to postgres;
 create table tower
 (
-    tower_id        integer               not null default nextval('tower_id_seq'::regclass),
-    role_id         integer               not null,
-    usuario_id      integer               not null UNIQUE,
-    mid             uuid                  not null UNIQUE,
-    auth            varchar(100)          not null UNIQUE,
-    pass            character varying(90) not null default ''::character varying,
-    is_staff        integer               not null default 0,
-    fh_registro     timestamptz                    default NOW()::timestamptz,
-    fh_modificacion timestamptz                    default NOW()::timestamptz,
-    usr_registra_id integer               not null default 0,
-    usr_modifica_id integer               not null default 0,
+    tower_id        integer               default nextval('tower_id_seq'::regclass),
+    role_id         integer,
+    usuario_id      integer UNIQUE,
+    mid             uuid UNIQUE,
+    auth            varchar(100) UNIQUE,
+    pass            character varying(90) default ''::character varying,
+    is_staff        integer               default 0,
+    fh_registro     timestamptz           default NOW()::timestamptz,
+    fh_modificacion timestamptz           default NOW()::timestamptz,
+    usr_registra_id integer               default 0,
+    usr_modifica_id integer               default 0,
     primary key (tower_id),
     foreign key (usuario_id) references usuario (usuario_id),
     foreign key (role_id) references roles (role_id),
@@ -91,18 +91,18 @@ create sequence personal_id_seq;
 alter sequence personal_id_seq owner to postgres;
 create table personal
 (
-    personal_id     integer not null default nextval('personal_id_seq'::regclass),
-    user_access_id  integer not null,
-    apellidos       varchar(20)      default ''::character varying not null,
-    nombre          varchar(30)      default ''::character varying not null,
-    sucursal_id     integer not null default 0,
-    funcion_id      integer not null default 0,
-    fh_registro     timestamptz      default NOW()::timestamptz,
-    fh_autorizacion timestamptz      default NOW()::timestamptz,
-    fh_modificacion timestamptz      default NOW()::timestamptz,
-    usr_registra_id integer not null default 0,
-    usr_autoriza_id integer not null default 0,
-    usr_modifica_id integer not null default 0,
+    personal_id     integer     default nextval('personal_id_seq'::regclass),
+    user_access_id  integer,
+    apellidos       varchar(20) default ''::character varying not null,
+    nombre          varchar(30) default ''::character varying not null,
+    sucursal_id     integer     default 0,
+    funcion_id      integer     default 0,
+    fh_registro     timestamptz default NOW()::timestamptz,
+    fh_autorizacion timestamptz default NOW()::timestamptz,
+    fh_modificacion timestamptz default NOW()::timestamptz,
+    usr_registra_id integer     default 0,
+    usr_autoriza_id integer     default 0,
+    usr_modifica_id integer     default 0,
     constraint personal_key primary key (personal_id),
     foreign key (user_access_id) references user_access (user_access_id) on update cascade
 );
@@ -115,29 +115,29 @@ create sequence cliente_id_seq;
 alter sequence cliente_id_seq owner to postgres;
 create table cliente
 (
-    cliente_id      integer                                   not null default nextval('cliente_id_seq'::regclass),
-    user_access_id  integer                                   not null,
-    sucursal_id     integer     default 0                     not null,
-    nombre          varchar(30) default ''::character varying not null,
-    apellidos       varchar(20) default ''::character varying not null,
-    correo          varchar(50) default ''::character varying not null,
-    tel_1           varchar(10) default ''::character varying not null,
-    c_credito       boolean     default false                 not null,
-    c_ahorro        boolean     default false                 not null,
+    cliente_id      integer     default nextval('cliente_id_seq'::regclass),
+    user_access_id  integer,
+    sucursal_id     integer     default 0,
+    numero_cuenta uuid         not null UNIQUE,
+    nombre          varchar(30) default ''::character varying,
+    apellidos       varchar(20) default ''::character varying,
+    correo          varchar(50) default ''::character varying,
+    tel_1           varchar(10) default ''::character varying,
+    c_credito       boolean     default false,
+    c_ahorro        boolean     default false,
     fh_registro     timestamptz default NOW()::timestamptz,
     fh_modificacion timestamptz default NOW()::timestamptz,
     fh_autorizacion timestamptz default NOW()::timestamptz,
-    usr_registra_id integer                                   not null default 0,
-    usr_modifica_id integer                                   not null default 0,
-    usr_autoriza_id integer                                   not null default 0,
-    constraint cliente_key primary key (cliente_id),
-    foreign key (user_access_id) references user_access (user_access_id)
+    usr_registra_id integer     default 0,
+    usr_modifica_id integer     default 0,
+    usr_autoriza_id integer     default 0,
+    constraint cliente_key primary key (cliente_id)
 );
 
 alter table cliente
     owner to postgres;
 
-
+select * from user_access
 -- --
 -- -- tabla conceptos
 create sequence conceptos_id_seq;

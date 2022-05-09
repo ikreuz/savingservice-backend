@@ -643,7 +643,7 @@ alter function fn_personal_eliminar_id(integer) owner to postgres;
 -- ----------------------------------------------------------------------------------- --
 -- Funcion insertar cliente
 create or replace function fn_cliente_insertar(
-    _cliente_id integer, _user_access_id integer, _sucursal_id integer, _nombre character varying,
+    _cliente_id integer, _user_access_id integer, _sucursal_id integer, _numero_cuenta uuid, _nombre character varying,
     _apellidos character varying, _correo character varying, _tel_1 character varying, _c_credito boolean,
     _c_ahorro boolean, _fh_registro timestamptz, _fh_modificacion timestamptz, _fh_autorizacion timestamptz,
     _usr_registra_id integer,
@@ -663,10 +663,10 @@ DECLARE
     __return         integer := -1;
 BEGIN
 
-    INSERT INTO cliente(cliente_id, user_access_id, sucursal_id, nombre, apellidos, correo, tel_1, c_credito,
+    INSERT INTO cliente(cliente_id, user_access_id, sucursal_id, numero_cuenta, nombre, apellidos, correo, tel_1, c_credito,
                         c_ahorro, fh_registro, fh_modificacion, fh_autorizacion, usr_registra_id,
                         usr_modifica_id, usr_autoriza_id)
-    VALUES (_cliente_id, _user_access_id, _sucursal_id, _nombre, _apellidos, _correo, _tel_1, _c_credito,
+    VALUES (_cliente_id, _user_access_id, _sucursal_id, _numero_cuenta, _nombre, _apellidos, _correo, _tel_1, _c_credito,
             _c_ahorro, _fh_registro, _fh_modificacion, _fh_autorizacion, _usr_registra_id,
             _usr_modifica_id, _usr_autoriza_id);
 
@@ -683,7 +683,7 @@ BEGIN
     RETURN __return;
 END
 $$;
-alter function fn_cliente_insertar( integer, integer, integer,varchar,
+alter function fn_cliente_insertar( integer, integer, integer, uuid, varchar,
     varchar, varchar, varchar, boolean, boolean, timestamptz, timestamptz, timestamptz,
     integer, integer, integer) owner to postgres;
 
@@ -691,7 +691,7 @@ alter function fn_cliente_insertar( integer, integer, integer,varchar,
 -- ----------------------------------------------------------------------------------- --
 -- Funcion actualiza un cliente
 create or replace function fn_cliente_actualizar(_cliente_id integer, _user_access_id integer, _sucursal_id integer,
-                                                 _nombre character varying,
+                                                _numero_cuenta uuid, _nombre character varying,
                                                  _apellidos character varying, _correo character varying,
                                                  _tel_1 character varying, _c_credito boolean,
                                                  _c_ahorro boolean, _fh_registro timestamptz,
@@ -715,6 +715,7 @@ BEGIN
     UPDATE cliente
     SET user_access_id= _user_access_id,
         sucursal_id=_sucursal_id,
+        numero_cuenta=_numero_cuenta,
         nombre=_nombre,
         apellidos= _apellidos,
         correo=_correo,
@@ -740,7 +741,7 @@ BEGIN
     RETURN __return;
 END
 $$;
-alter function fn_cliente_actualizar( integer, integer, integer,varchar,
+alter function fn_cliente_actualizar( integer, integer, integer, uuid, varchar,
     varchar, varchar, varchar, boolean, boolean, timestamptz, timestamptz, timestamptz,
     integer, integer, integer) owner to postgres;
 
@@ -796,7 +797,7 @@ END;
 $$;
 alter function fn_cliente_conseguir_user_access_id(integer) owner to postgres;
 
-SELECT * FROM fn_cliente_conseguir_mid(3)
+
 create or replace function fn_cliente_conseguir_mid(_cliente_id integer) returns uuid
     language plpgsql
 as
@@ -836,6 +837,7 @@ create or replace function fn_cliente_obtener_listado()
                 cliente_id      integer,
                 user_access_id  integer,
                 sucursal_id     integer,
+                numero_cuenta uuid,
                 nombre          character varying,
                 apellidos       character varying,
                 correo          character varying,
@@ -869,6 +871,7 @@ BEGIN
             cliente_id := __record.cliente_id;
             user_access_id := __record.user_access_id;
             sucursal_id := __record.sucursal_id;
+            numero_cuenta := __record.numero_cuenta;
             nombre := __record.nombre;
             apellidos := __record.apellidos;
             correo := __record.correo;
@@ -904,6 +907,24 @@ BEGIN
 END
 $$;
 alter function fn_cliente_obtener_ultimo_id() owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_cliente_obtener_ultimo_user_access()
+    RETURNS integer
+    language plpgsql
+AS
+$$
+/******************************************************************************
+NOMBRE: fn_cliente_obtener_ultimo_user_access
+OBJETIVO:
+******************************************************************************/
+DECLARE
+BEGIN
+    RETURN (SELECT user_access_id AS user_access_id FROM user_access ORDER BY user_access_id DESC LIMIT 1);
+END
+$$;
+alter function fn_cliente_obtener_ultimo_user_access() owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --

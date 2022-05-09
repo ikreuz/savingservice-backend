@@ -8,6 +8,7 @@ namespace SavingService.Domain.Entity
         public int Cliente_Id { get; set; }
         public int User_Access_Id { get; set; }
         public int Sucursal_Id { get; set; }
+        public Guid Numero_Cuenta { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
         public string Correo { get; set; }

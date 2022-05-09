@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SavingService.Application.DTO;
 using SavingService.Application.Interface;
 using System.Threading.Tasks;
@@ -69,13 +70,15 @@ namespace SavingService.Services.WebApi.Controllers
             return BadRequest(response.Message);
         }
 
+
+        [Produces("application/json")]
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var response = _customersApplication.GetAll();
 
             if (response.IsSuccess) return Ok(response);
-
+            
             return BadRequest(response.Message);
         }
 

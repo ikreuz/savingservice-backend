@@ -18,6 +18,8 @@ namespace SavingService.Infrastructure.Interface
 
         Guid GetGuid(int customerId);
         int GetLast();
+        int GetLastUserAccess();
+        int GetUserAccess(int customerId);
         #endregion
 
 
