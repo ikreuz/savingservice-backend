@@ -105,7 +105,7 @@ namespace SavingService.Services.WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Credit Service",
+                    Title = "Project Diana",
                     Description = "A simple example ASP.NET Core Web API",
                     TermsOfService = new Uri("https://savingservice/com/terms"),
                     Contact = new OpenApiContact
@@ -196,7 +196,7 @@ namespace SavingService.Services.WebApi
 
             services.AddAutoMapper(x => x.AddProfile(new MappingsProfile()));
             services.AddSingleton<IConnectionFactory, ConnectionFactory>();
-            
+
             // Dependecy injection for customers
             services.AddScoped<ICustomersApplication, CustomersApplication>();
             services.AddScoped<ICustomersDomain, CustomersDomain>();
@@ -232,7 +232,15 @@ namespace SavingService.Services.WebApi
             services.AddScoped<ITowerDomain, TowerDomain>();
             services.AddScoped<ITowerRepository, TowerRepository>();
 
+            // Dependecy injection for savingAccount
+            services.AddScoped<ISavingAccountApplication, SavingAccountApplication>();
+            services.AddScoped<ISavingAccountDomain, SavingAccountDomain>();
+            services.AddScoped<ISavingAccountRepository, SavingAccountRepository>();
 
+            // Dependecy injection for creditAccount
+            services.AddScoped<ICreditAccountApplication, CreditAccountApplication>();
+            services.AddScoped<ICreditAccountDomain, CreditAccountDomain>();
+            services.AddScoped<ICreditAccountRepository, CreditAccountRepository>();
             // Dependecy injection for logger
             //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
