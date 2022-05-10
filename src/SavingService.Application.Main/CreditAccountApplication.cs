@@ -22,13 +22,13 @@ namespace SavingService.Application.Main
         }
 
         #region Métodos Síncronos
-        public Response<CreditAccountDto> Get(int userDataId)
+        public Response<IEnumerable<CreditAccountDto>> Get(int accountId)
         {
-            var response = new Response<CreditAccountDto>();
+            var response = new Response<IEnumerable<CreditAccountDto>>();
             try
             {
-                var transaction = _creditAccountDomain.Get(userDataId);
-                response.Data = _mapper.Map<CreditAccountDto>(transaction);
+                var transaction = _creditAccountDomain.Get(accountId);
+                response.Data = _mapper.Map<IEnumerable<CreditAccountDto>>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;
@@ -44,13 +44,13 @@ namespace SavingService.Application.Main
         #endregion
 
         #region Métodos Asíncronos
-        public async Task<Response<CreditAccountDto>> GetAsync(int userDataId)
+        public async Task<Response<IEnumerable<CreditAccountDto>>> GetAsync(int accountId)
         {
-            var response = new Response<CreditAccountDto>();
+            var response = new Response<IEnumerable<CreditAccountDto>>();
             try
             {
-                var transaction = await _creditAccountDomain.GetAsync(userDataId);
-                response.Data = _mapper.Map<CreditAccountDto>(transaction);
+                var transaction = await _creditAccountDomain.GetAsync(accountId);
+                response.Data = _mapper.Map<IEnumerable<CreditAccountDto>>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;

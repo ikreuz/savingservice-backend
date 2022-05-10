@@ -18,7 +18,7 @@ namespace SavingService.Domain.Core
         }
 
         #region Synchronous Methods
-        public CreditAccount Get(int accountId)
+        public IEnumerable<CreditAccount> Get(int accountId)
         {
             return _creditAccountRepository.Get(accountId);
         }
@@ -26,7 +26,7 @@ namespace SavingService.Domain.Core
 
         #region Asynchronous Methods
 
-        public async Task<CreditAccount> GetAsync(int accountId)
+        public async Task<IEnumerable<CreditAccount>> GetAsync(int accountId)
         {
             return await _creditAccountRepository.GetAsync(accountId);
         }

@@ -19,7 +19,7 @@ namespace SavingService.Services.WebApi.Controllers
         #region Synchronous Methods
 
         [HttpGet("get/{accountId}")]
-        public IActionResult Get(int accountId)
+        public IActionResult GetAll(int accountId)
         {
             if (accountId <= 0) return BadRequest();
 

@@ -22,13 +22,13 @@ namespace SavingService.Application.Main
         }
 
         #region Métodos Síncronos
-        public Response<SavingAccountDto> Get(int userDataId)
+        public Response<IEnumerable<SavingAccountDto>> Get(int accountId)
         {
-            var response = new Response<SavingAccountDto>();
+            var response = new Response<IEnumerable<SavingAccountDto>>();
             try
             {
-                var transaction = _savingAccountDomain.Get(userDataId);
-                response.Data = _mapper.Map<SavingAccountDto>(transaction);
+                var transaction = _savingAccountDomain.Get(accountId);
+                response.Data = _mapper.Map<IEnumerable<SavingAccountDto>>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;
@@ -44,13 +44,13 @@ namespace SavingService.Application.Main
         #endregion
 
         #region Métodos Asíncronos
-        public async Task<Response<SavingAccountDto>> GetAsync(int userDataId)
+        public async Task<Response<IEnumerable<SavingAccountDto>>> GetAsync(int accountId)
         {
-            var response = new Response<SavingAccountDto>();
+            var response = new Response<IEnumerable<SavingAccountDto>>();
             try
             {
-                var transaction = await _savingAccountDomain.GetAsync(userDataId);
-                response.Data = _mapper.Map<SavingAccountDto>(transaction);
+                var transaction = await _savingAccountDomain.GetAsync(accountId);
+                response.Data = _mapper.Map<IEnumerable<SavingAccountDto>>(transaction);
                 if (response.Data != null)
                 {
                     response.IsSuccess = true;

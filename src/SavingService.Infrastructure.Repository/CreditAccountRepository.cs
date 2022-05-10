@@ -21,16 +21,16 @@ namespace SavingService.Infrastructure.Repository
 
         #region Synchronous Methods
 
-        public CreditAccount Get(int customerId)
+        public IEnumerable<CreditAccount> Get(int accountId)
         {
             using (var connection = _connectionFactory.GetConnection)
             {
                 var query = "fn_cuenta_ahorro_obtener_id";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_cliente_id", customerId);
+                parameters.Add("@_cliente_id", accountId);
 
-                var customer = connection.QuerySingle<CreditAccount>(query, param: parameters, commandType: CommandType.StoredProcedure);
-                return customer;
+                var account = connection.Query<CreditAccount>(query, param: parameters, commandType: CommandType.StoredProcedure);
+                return account;
             }
         }
         #endregion
@@ -38,16 +38,16 @@ namespace SavingService.Infrastructure.Repository
 
         #region Asynchronous Methods
 
-        public async Task<CreditAccount> GetAsync(int customerId)
+        public async Task<IEnumerable<CreditAccount>> GetAsync(int accountId)
         {
             using (var connection = _connectionFactory.GetConnection)
             {
                 var query = "fn_cuenta_credito_obtener_id";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_cliente_id", customerId);
+                parameters.Add("@_cliente_id", accountId);
 
-                var customer = await connection.QuerySingleAsync<CreditAccount>(query, param: parameters, commandType: CommandType.StoredProcedure);
-                return customer;
+                var account = await connection.QueryAsync<CreditAccount>(query, param: parameters, commandType: CommandType.StoredProcedure);
+                return account;
             }
         }
         #endregion

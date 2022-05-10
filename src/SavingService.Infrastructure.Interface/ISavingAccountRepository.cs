@@ -9,12 +9,12 @@ namespace SavingService.Infrastructure.Interface
     public interface ISavingAccountRepository
     {
         #region Synchronous Methods
-        SavingAccount Get(int accountId);
+        IEnumerable<SavingAccount> Get(int accountId);
         #endregion
 
 
         #region Asynchronous Methods
-        Task<SavingAccount> GetAsync(int accountId);
+        Task<IEnumerable<SavingAccount>> GetAsync(int accountId);
         #endregion
     }
 }

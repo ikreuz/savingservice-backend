@@ -9,12 +9,12 @@ namespace SavingService.Infrastructure.Interface
     public interface ICreditAccountRepository
     {
         #region Synchronous Methods
-        CreditAccount Get(int accountId);
+        IEnumerable<CreditAccount> Get(int accountId);
         #endregion
 
 
         #region Asynchronous Methods
-        Task<CreditAccount> GetAsync(int accountId);
+        Task<IEnumerable<CreditAccount>> GetAsync(int accountId);
         #endregion
     }
 }

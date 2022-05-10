@@ -11,11 +11,11 @@ namespace SavingService.Application.Interface
     {
         #region Synchronous Methods
 
-        Response<SavingAccountDto> Get(int accountId);
+        Response<IEnumerable<SavingAccountDto>> Get(int accountId);
         #endregion
 
         #region Métodos Asíncronos
-        Task<Response<SavingAccountDto>> GetAsync(int accountId);
+        Task<Response<IEnumerable<SavingAccountDto>>> GetAsync(int accountId);
         #endregion
     }
 }

@@ -23,7 +23,7 @@ namespace SavingService.Infrastructure.Repository
 
         #region Synchronous Methods
 
-        public SavingAccount Get(int customerId)
+        public IEnumerable<SavingAccount> Get(int customerId)
         {
             using (var connection = _connectionFactory.GetConnection)
             {
@@ -31,7 +31,7 @@ namespace SavingService.Infrastructure.Repository
                 var parameters = new DynamicParameters();
                 parameters.Add("@_cliente_id", customerId);
 
-                var customer = connection.QuerySingle<SavingAccount>(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var customer = connection.Query<SavingAccount>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return customer;
             }
         }
@@ -40,7 +40,7 @@ namespace SavingService.Infrastructure.Repository
 
         #region Asynchronous Methods
 
-        public async Task<SavingAccount> GetAsync(int customerId)
+        public async Task<IEnumerable<SavingAccount>> GetAsync(int customerId)
         {
             using (var connection = _connectionFactory.GetConnection)
             {
@@ -48,7 +48,7 @@ namespace SavingService.Infrastructure.Repository
                 var parameters = new DynamicParameters();
                 parameters.Add("@_cliente_id", customerId);
 
-                var customer = await connection.QuerySingleAsync<SavingAccount>(query, param: parameters, commandType: CommandType.StoredProcedure);
+                var customer = await connection.QueryAsync<SavingAccount>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return customer;
             }
         }

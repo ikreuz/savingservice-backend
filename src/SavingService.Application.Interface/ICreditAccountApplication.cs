@@ -10,11 +10,11 @@ namespace SavingService.Application.Interface
     public interface ICreditAccountApplication
     {
         #region Synchronous Methods
-        Response<CreditAccountDto> Get(int accountId);
+        Response<IEnumerable<CreditAccountDto>> Get(int accountId);
         #endregion
 
         #region Métodos Asíncronos
-        Task<Response<CreditAccountDto>> GetAsync(int accountId);
+        Task<Response<IEnumerable<CreditAccountDto>>> GetAsync(int accountId);
         #endregion
     }
 }
