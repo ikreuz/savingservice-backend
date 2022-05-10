@@ -26,29 +26,24 @@ VALUES (2, 'James', 'Dean', 'dean.app@fake.com', 'dean', NOW()::timestamptz,
 
 INSERT INTO usuario(usuario_id, nombre, apellidos, correo, nombre_usuario, fh_registro, fh_modificacion,
                     usr_registra_id, usr_modifica_id)
-VALUES (3, 'Diana', 'Kurkova', 'diana.app@fake.com', 'diana', NOW()::timestamptz,
+VALUES (3, 'Jennifer', 'Connelly', 'jeniffer.app@fake.com', 'jeniffer', NOW()::timestamptz,
         CURRENT_TIMESTAMP, 1, 0);
 
 
 
 INSERT INTO tower(tower_id, role_id, usuario_id, mid, auth, pass, is_staff, fh_registro,
                   fh_modificacion, usr_registra_id, usr_modifica_id)
-VALUES (1, 1,
-        1,
-        '67e276d4-7d6c-8330-c823-7d62ccd35a95', '00xyZfb/XlxROoNOz2AOXjw+cT/+YJfI8nAZ7t6Z7ew=',
+VALUES (1, 1, 1, '67e276d4-7d6c-8330-c823-7d62ccd35a95', '00xyZfb/XlxROoNOz2AOXjw+cT/+YJfI8nAZ7t6Z7ew=',
         'wQskObIJVpTiMXiiDkbmAw==', 1, NOW()::TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
 
 INSERT INTO tower(tower_id, role_id, usuario_id, mid, auth, pass, is_staff, fh_registro,
                   fh_modificacion, usr_registra_id, usr_modifica_id)
-VALUES (2, 2,
-        2,
-        '4c6e6b25-a2fe-6041-df62-b8e28533b5ab', '00c9mMkz/n50VYQUyvEAzEdW+1o1Fk9FALeZhnQy7LM=',
+VALUES (2, 2, 2, '4c6e6b25-a2fe-6041-df62-b8e28533b5ab', '00c9mMkz/n50VYQUyvEAzEdW+1o1Fk9FALeZhnQy7LM=',
         'wQskObIJVpTiMXiiDkbmAw==', 1, NOW()::TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
 
 INSERT INTO tower(tower_id, role_id, usuario_id, mid, auth, pass, is_staff, fh_registro,
                   fh_modificacion, usr_registra_id, usr_modifica_id)
-VALUES (3, 3,
-        3, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f',
+VALUES (3, 3, 3, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f',
         '00qBdp3bUt0TyupDiCJuA7iIhPJMRCS5C78qoIK09vo=',
         'wQskObIJVpTiMXiiDkbmAw==', 1, NOW()::TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
 -- --
@@ -57,8 +52,7 @@ VALUES (3, 3,
 INSERT INTO user_access(user_access_id, usuario_id, mid, auth, created_at, last_login, activity_status, is_staff,
                         operation_id, operation_context_id, fh_registro, fh_modificacion, fh_activacion,
                         usr_registra_id, usr_modifica_id, usr_activa_id)
-VALUES (1, 1,
-        '67e276d4-7d6c-8330-c823-7d62ccd35a95', '00xyZfb/XlxROoNOz2AOXjw+cT/+YJfI8nAZ7t6Z7ew=',
+VALUES (1, 1, '67e276d4-7d6c-8330-c823-7d62ccd35a95', '00xyZfb/XlxROoNOz2AOXjw+cT/+YJfI8nAZ7t6Z7ew=',
         NOW()::timestamptz, NOW()::timestamptz, false, 1, 1542, 1562, NOW()::timestamptz, NOW()::timestamptz,
         NOW()::timestamptz,
         1, 1, 0);
@@ -66,8 +60,7 @@ VALUES (1, 1,
 INSERT INTO user_access(user_access_id, usuario_id, mid, auth, created_at, last_login, activity_status, is_staff,
                         operation_id, operation_context_id, fh_registro, fh_modificacion, fh_activacion,
                         usr_registra_id, usr_modifica_id, usr_activa_id)
-VALUES (2, 2,
-        '4c6e6b25-a2fe-6041-df62-b8e28533b5ab', '00c9mMkz/n50VYQUyvEAzEdW+1o1Fk9FALeZhnQy7LM=',
+VALUES (2, 2, '4c6e6b25-a2fe-6041-df62-b8e28533b5ab', '00c9mMkz/n50VYQUyvEAzEdW+1o1Fk9FALeZhnQy7LM=',
         NOW()::timestamptz, NOW()::timestamptz, false, 1, 1542, 1562, NOW()::timestamptz, NOW()::timestamptz,
         NOW()::timestamptz,
         1, 1, 0);
@@ -75,8 +68,7 @@ VALUES (2, 2,
 INSERT INTO user_access(user_access_id, usuario_id, mid, auth, created_at, last_login, activity_status, is_staff,
                         operation_id, operation_context_id, fh_registro, fh_modificacion, fh_activacion,
                         usr_registra_id, usr_modifica_id, usr_activa_id)
-VALUES (3, 3,
-        '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', '00qBdp3bUt0TyupDiCJuA7iIhPJMRCS5C78qoIK09vo=',
+VALUES (3, 3, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', '00qBdp3bUt0TyupDiCJuA7iIhPJMRCS5C78qoIK09vo=',
         NOW()::timestamptz, NOW()::timestamptz, false, 2, 1542, 1562, NOW()::timestamptz, NOW()::timestamptz,
         NOW()::timestamptz,
         1, 1, 0);
@@ -97,10 +89,10 @@ VALUES (2, 2, 'James', 'Dean', 1, 40,
 -- --
 -- --
 -- --
-INSERT INTO cliente(cliente_id, user_access_id, sucursal_id, numero_cuenta,  nombre, apellidos, correo, tel_1, c_credito, c_ahorro,
+INSERT INTO cliente(cliente_id, user_access_id, sucursal_id, numero_cuenta, nombre, apellidos, correo, tel_1, c_credito,
+                    c_ahorro,
                     fh_registro, fh_modificacion, fh_autorizacion, usr_registra_id, usr_modifica_id, usr_autoriza_id)
-VALUES (1, 3,
-        1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 'Diana', 'Natasha', '', '', false, false, NOW()::timestamptz,
+VALUES (1, 3, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 'Jennifer', 'Connelly', '', '', true, true, NOW()::timestamptz,
         CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1,
         0, 0);
 
@@ -109,45 +101,54 @@ VALUES (1, 3,
 -- --
 -- --
 -- --
-INSERT INTO transaction(transaction_id, folio, cliente_id, sucursal_id, fh_registro, fh_modificacion,
-                        usr_registra_id, usr_modifica_id)
-VALUES (1, 1, 1, 1, NOW()::timestamptz, CURRENT_TIMESTAMP, 1, 0);
+-- INSERT INTO transaction(transaction_id, folio, cliente_id, sucursal_id, fh_registro, fh_modificacion,
+--                         usr_registra_id, usr_modifica_id)
+-- VALUES (1, 1, 1, 1, NOW()::timestamptz, CURRENT_TIMESTAMP, 1, 0);
 -- doc 52 cierre, 53 apertura, 54 deposito, 55 retiro
 -- spend 0, by spend 6000, balance 6000
 -- status 47 borrador, 48 por cobrar, 49 cobrado, 50 cancelada
-INSERT INTO transaction_credit(credit_id, transaction_id, documento_id, cobrado, por_cobrar, total, status_id)
-VALUES (1, 1, 53, 0, 6000, 6000, 47);
+-- tipo de cuenta 36 credito, 37 ahorro
+INSERT INTO transaction_credit(credit_id, tipo_cuenta, numero_cuenta, documento_id, cobrado, por_cobrar, total,
+                               status_id)
+VALUES (1, 36, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 53, 0, 6000, 6000, 47);
 
-INSERT INTO transaction_credit(credit_id, transaction_id, documento_id, cobrado, por_cobrar, total, status_id)
-VALUES (2, 1, 54, 3000, 3000, 6000, 48);
+INSERT INTO transaction_credit(credit_id, tipo_cuenta, numero_cuenta, documento_id, cobrado, por_cobrar, total,
+                               status_id)
+VALUES (2, 36, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 54, 3000, 3000, 6000, 48);
 
-INSERT INTO transaction_credit(credit_id, transaction_id, documento_id, cobrado, por_cobrar, total, status_id)
-VALUES (3, 1, 54, 3000, 3000, 6000, 48);
+INSERT INTO transaction_credit(credit_id, tipo_cuenta, numero_cuenta, documento_id, cobrado, por_cobrar, total,
+                               status_id)
+VALUES (3, 36, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 54, 3000, 3000, 6000, 48);
 
-INSERT INTO transaction_credit(credit_id, transaction_id, documento_id, cobrado, por_cobrar, total, status_id)
-VALUES (4, 1, 52, 3000, 0, 6000, 49);
+INSERT INTO transaction_credit(credit_id, tipo_cuenta, numero_cuenta, documento_id, cobrado, por_cobrar, total,
+                               status_id)
+VALUES (4, 36, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 52, 3000, 0, 6000, 49);
 
 
 -- --
 -- --
 -- --
-INSERT INTO transaction(transaction_id, folio, cliente_id, sucursal_id, fh_registro,
-                        fh_modificacion, usr_registra_id, usr_modifica_id)
-VALUES (2, 2, 1, 1, NOW()::timestamptz, CURRENT_TIMESTAMP, 1, 0);
+-- INSERT INTO transaction(transaction_id, folio, cliente_id, sucursal_id, fh_registro,
+--                         fh_modificacion, usr_registra_id, usr_modifica_id)
+-- VALUES (2, 2, 1, 1, NOW()::timestamptz, CURRENT_TIMESTAMP, 1, 0);
 -- doc 52 cierre, 53 apertura, 54 deposito, 55 retiro
 -- spend 0, by spend 6000, balance 6000
 -- status 47 borrador, 48 por cobrar, 49 cobrado, 50 cancelada
-INSERT INTO transaction_saving(saving_id, transaction_id, documento_id, cantidad, total)
-VALUES (1, 2, 53, 400, 400);
+-- tipo de cuenta 36 credito, 37 ahorro
+INSERT INTO transaction_saving(saving_id, tipo_cuenta, apertura, numero_cuenta, documento_id, cantidad, total)
+VALUES (1, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 53, 400, 0);
 
-INSERT INTO transaction_saving(saving_id, transaction_id, documento_id, cantidad, total)
-VALUES (2, 2, 54, 2400, 2800);
+INSERT INTO transaction_saving(saving_id, tipo_cuenta, apertura, numero_cuenta, documento_id, cantidad, total)
+VALUES (2, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 54, 2400, 2800);
 
-INSERT INTO transaction_saving(saving_id, transaction_id, documento_id, cantidad, total)
-VALUES (3, 2, 55, 2800, 0);
+INSERT INTO transaction_saving(saving_id, tipo_cuenta, apertura, numero_cuenta, documento_id, cantidad, total)
+VALUES (3, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 55, 1000, 1800);
 
-INSERT INTO transaction_saving(saving_id, transaction_id, documento_id, cantidad, total)
-VALUES (4, 2, 52, 0, 0);
+INSERT INTO transaction_saving(saving_id, tipo_cuenta, apertura, numero_cuenta, documento_id, cantidad, total)
+VALUES (4, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 55, 1800, 0);
+
+INSERT INTO transaction_saving(saving_id, tipo_cuenta, apertura, numero_cuenta, documento_id, cantidad, total)
+VALUES (5, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 52, 0, 0);
 
 
 

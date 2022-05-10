@@ -119,7 +119,7 @@ select u.usuario_id,
        u.apellidos,
        u.correo,
        u.nombre_usuario,
-       m.pass  as clave_acceso,
+       m.pass as clave_acceso,
 --        u.activo,
 --        CasE u.activo
 --            WHEN true THEN 'SI'::varchar
@@ -243,44 +243,43 @@ alter table vw_personal
     owner to postgres;
 
 
-
-create or replace view vw_transaccion
-            (transaction_id, folio, cliente_id, sucursal_id, nombre_sucursal, fh_registro, fh_modificacion,
-             usr_registra_id,
-             usr_registra, usr_modifica_id, usr_modifica)
-as
-SELECT t.transaction_id,
-       t.folio,
-       t.cliente_id,
-       t.sucursal_id,
-       s.nombre_sucursal,
-       t.fh_registro,
-       t.fh_modificacion,
-       t.usr_registra_id,
-       COALESCE(vu1.nombre_usuario, 'N/A'::character varying) as usr_registra,
-       t.usr_modifica_id,
-       COALESCE(vu2.nombre_usuario, 'N/A'::character varying) as usr_modifica
-
-FROM transaction t
-         LEFT JOIN vw_usuario vu1 ON t.usr_registra_id = vu1.usuario_id
-         LEFT JOIN vw_usuario vu2 ON t.usr_modifica_id = vu2.usuario_id
-         LEFT JOIN vw_cliente vc ON t.cliente_id = vc.cliente_id
-         LEFT JOIN sucursal s ON t.sucursal_id = s.sucursal_id;
-
-alter table vw_transaccion
-    owner to postgres;
+--
+-- create or replace view vw_transaccion
+--             (transaction_id, folio, cliente_id, sucursal_id, nombre_sucursal, fh_registro, fh_modificacion,
+--              usr_registra_id,
+--              usr_registra, usr_modifica_id, usr_modifica)
+-- as
+-- SELECT t.transaction_id,
+--        t.folio,
+--        t.cliente_id,
+--        t.sucursal_id,
+--        s.nombre_sucursal,
+--        t.fh_registro,
+--        t.fh_modificacion,
+--        t.usr_registra_id,
+--        COALESCE(vu1.nombre_usuario, 'N/A'::character varying) as usr_registra,
+--        t.usr_modifica_id,
+--        COALESCE(vu2.nombre_usuario, 'N/A'::character varying) as usr_modifica
+--
+-- FROM transaction t
+--          LEFT JOIN vw_usuario vu1 ON t.usr_registra_id = vu1.usuario_id
+--          LEFT JOIN vw_usuario vu2 ON t.usr_modifica_id = vu2.usuario_id
+--          LEFT JOIN vw_cliente vc ON t.cliente_id = vc.cliente_id
+--          LEFT JOIN sucursal s ON t.sucursal_id = s.sucursal_id;
+--
+-- alter table vw_transaccion
+--     owner to postgres;
 
 
 create or replace view vw_transaccion_credito
-            (credit_id, transaction_id, documento_id, documento_txt, nombre_sucursal, cobrado, por_cobrar,
-             cobrado_txt, total, fh_registro, fh_modificacion, usr_registra_id, usr_registra, usr_modifica_id,
-             usr_modifica)
+            (credit_id, tipo_cuenta, numero_cuenta, documento_id, documento_txt, cobrado, por_cobrar,
+             cobrado_txt, total, status_id, status_txt)
 as
 SELECT t.credit_id,
-       t.transaction_id,
+       t.tipo_cuenta,
+       t.numero_cuenta,
        t.documento_id,
-       cc.concepto                                            AS documento_txt,
-       s.nombre_sucursal,
+       cc.concepto  AS documento_txt,
        t.cobrado,
        t.por_cobrar,
        CASE
@@ -288,22 +287,15 @@ SELECT t.credit_id,
            WHEN t.cobrado = 0 THEN 'No ha sido cobrado'::text
            WHEN t.cobrado > 0 THEN 'Falta por cobrar'::text
            ELSE NULL::text
-           END                                                as cobrado_txt,
+           END      as cobrado_txt,
        t.total,
-       t2.fh_registro,
-       t2.fh_modificacion,
-       t2.usr_registra_id,
-       COALESCE(vu1.nombre_usuario, 'N/A'::character varying) as usr_registra,
-       t2.usr_modifica_id,
-       COALESCE(vu2.nombre_usuario, 'N/A'::character varying) as usr_modifica
+       t.status_id,
+       cc2.concepto AS status_txt
 
 FROM transaction_credit t
          LEFT JOIN conceptos cc ON t.documento_id = cc.concepto_id
-         LEFT JOIN transaction t2 on t.transaction_id = t2.transaction_id
-         LEFT JOIN vw_usuario vu1 ON t2.usr_registra_id = vu1.usuario_id
-         LEFT JOIN vw_usuario vu2 ON t2.usr_modifica_id = vu2.usuario_id
-         LEFT JOIN vw_cliente vc ON t2.cliente_id = vc.cliente_id
-         LEFT JOIN sucursal s ON t2.sucursal_id = s.sucursal_id;
+         LEFT JOIN conceptos cc2 ON t.status_id = cc2.concepto_id
+;
 
 alter table vw_transaccion_credito
     owner to postgres;
@@ -311,33 +303,26 @@ alter table vw_transaccion_credito
 
 
 create or replace view vw_transaccion_ahorro
-            (saving_id, transaction_id, documento_id, documento_txt, nombre_sucursal, cantidad, total,
-             fh_registro, fh_modificacion, usr_registra_id, usr_registra, usr_modifica_id, usr_modifica)
+            (saving_id, tipo_cuenta, tipo_cuenta_txt, apertura, numero_cuenta, documento_id, documento_txt, cantidad,
+             total)
 as
 SELECT t.saving_id,
-       t.transaction_id,
+       t.tipo_cuenta,
+       cc2.concepto AS tipo_cuenta_txt,
+       t.apertura,
+       t.numero_cuenta,
        t.documento_id,
-       cc.concepto                                            AS documento_txt,
-       s.nombre_sucursal,
+       cc.concepto  AS documento_txt,
        t.cantidad,
-       t.total,
-       t2.fh_registro,
-       t2.fh_modificacion,
-       t2.usr_registra_id,
-       COALESCE(vu1.nombre_usuario, 'N/A'::character varying) as usr_registra,
-       t2.usr_modifica_id,
-       COALESCE(vu2.nombre_usuario, 'N/A'::character varying) as usr_modifica
+       t.total
 
 FROM transaction_saving t
          LEFT JOIN conceptos cc ON t.documento_id = cc.concepto_id
-         LEFT JOIN transaction t2 on t.transaction_id = t2.transaction_id
-         LEFT JOIN vw_usuario vu1 ON t2.usr_registra_id = vu1.usuario_id
-         LEFT JOIN vw_usuario vu2 ON t2.usr_modifica_id = vu2.usuario_id
-         LEFT JOIN vw_cliente vc ON t2.cliente_id = vc.cliente_id
-         LEFT JOIN sucursal s ON t2.sucursal_id = s.sucursal_id;
-
+         LEFT JOIN conceptos cc2 ON t.tipo_cuenta = cc2.concepto_id
+;
 alter table vw_transaccion_ahorro
     owner to postgres;
+
 
 
 create or replace view vw_tower
@@ -361,3 +346,53 @@ FROM tower t;
 alter table vw_tower
     owner to postgres;
 
+
+-- drop function  fn_cuenta_ahorro_obtener_id;
+-- drop view vw_cuenta_ahorro;
+-- select * from vw_cuenta_ahorro ORDER BY saving_id DESC;
+-- select * from fn_cuenta_ahorro_obtener_id(1);
+
+
+-- create or replace view vw_cuenta_ahorro (transaction_id, saving_id, cantidad, total, cliente_id, cliente, documento_txt)
+-- as
+-- SELECT t.transaction_id,
+--        ts.saving_id,
+--        ts.cantidad,
+--        ts.total,
+--        c.cliente_id,
+--        (c.nombre::text || ' '::text) || c.apellidos::text as cliente,
+--        cpt.concepto                                       AS documento_txt
+--
+-- FROM transaction t
+--          JOIN transaction_saving ts on t.transaction_id = ts.transaction_id
+--          JOIN cliente c on t.cliente_id = c.cliente_id
+--          JOIN conceptos cpt on ts.documento_id = cpt.concepto_id;
+--
+-- alter table vw_cuenta_ahorro
+--     owner to postgres;
+
+
+--
+-- create or replace view vw_cuenta_credito
+--             (transaction_id, credit_id, cobrado, por_cobrar, total, cliente_id, cliente, documento_txt,
+--              status_id, status_txt)
+-- as
+-- SELECT t.transaction_id,
+--        tc.credit_id,
+--        tc.cobrado,
+--        tc.por_cobrar,
+--        tc.total,
+--        c.cliente_id,
+--        (c.nombre::text || ' '::text) || c.apellidos::text as cliente,
+--        cn1.concepto                                       AS documento_txt,
+--        tc.status_id,
+--        cn2.concepto                                       AS status_txt
+--
+-- FROM transaction t
+--          JOIN transaction_credit tc on t.transaction_id = tc.transaction_id
+--          JOIN cliente c on t.cliente_id = c.cliente_id
+--          JOIN conceptos cn1 on tc.documento_id = cn1.concepto_id
+--          JOIN conceptos cn2 on tc.status_id = cn2.concepto_id
+-- ;
+-- alter table vw_cuenta_credito
+--     owner to postgres;

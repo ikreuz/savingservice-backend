@@ -663,10 +663,12 @@ DECLARE
     __return         integer := -1;
 BEGIN
 
-    INSERT INTO cliente(cliente_id, user_access_id, sucursal_id, numero_cuenta, nombre, apellidos, correo, tel_1, c_credito,
+    INSERT INTO cliente(cliente_id, user_access_id, sucursal_id, numero_cuenta, nombre, apellidos, correo, tel_1,
+                        c_credito,
                         c_ahorro, fh_registro, fh_modificacion, fh_autorizacion, usr_registra_id,
                         usr_modifica_id, usr_autoriza_id)
-    VALUES (_cliente_id, _user_access_id, _sucursal_id, _numero_cuenta, _nombre, _apellidos, _correo, _tel_1, _c_credito,
+    VALUES (_cliente_id, _user_access_id, _sucursal_id, _numero_cuenta, _nombre, _apellidos, _correo, _tel_1,
+            _c_credito,
             _c_ahorro, _fh_registro, _fh_modificacion, _fh_autorizacion, _usr_registra_id,
             _usr_modifica_id, _usr_autoriza_id);
 
@@ -691,7 +693,7 @@ alter function fn_cliente_insertar( integer, integer, integer, uuid, varchar,
 -- ----------------------------------------------------------------------------------- --
 -- Funcion actualiza un cliente
 create or replace function fn_cliente_actualizar(_cliente_id integer, _user_access_id integer, _sucursal_id integer,
-                                                _numero_cuenta uuid, _nombre character varying,
+                                                 _numero_cuenta uuid, _nombre character varying,
                                                  _apellidos character varying, _correo character varying,
                                                  _tel_1 character varying, _c_credito boolean,
                                                  _c_ahorro boolean, _fh_registro timestamptz,
@@ -769,6 +771,28 @@ alter function fn_cliente_obtener_id(integer) owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
+create or replace function fn_cliente_obtener_uuid(_numero_cuenta uuid)
+    returns SETOF vw_cliente
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_cliente_obtener_uuid
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __record vw_cliente;
+BEGIN
+    FOR __record IN SELECT * FROM vw_cliente WHERE numero_cuenta = _numero_cuenta
+        LOOP
+            RETURN NEXT __record;
+        END LOOP;
+END;
+$$;
+alter function fn_cliente_obtener_uuid(uuid) owner to postgres;
+
+-- ----------------------------------------------------------------------------------- --
 create or replace function fn_cliente_conseguir_user_access_id(_cliente_id integer) returns integer
     language plpgsql
 as
@@ -809,7 +833,7 @@ RETORNA:
 ******************************************************************************/
 DECLARE
     __exist  integer := 1;
-    __return uuid := uuid_nil();
+    __return uuid    := uuid_nil();
 BEGIN
     IF (select exists(select 1 from cliente where cliente_id = _cliente_id)) THEN
         __exist := 1;
@@ -829,6 +853,90 @@ $$;
 alter function fn_cliente_conseguir_mid(integer) owner to postgres;
 
 
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_cliente_cambiar_status_credito(_change_id uuid, _new_status boolean)
+    returns integer
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_cliente_cambiar_status_credito
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __RW     integer;
+    __return integer := -1;
+BEGIN
+    IF (select exists(select 1 from cliente where numero_cuenta = _change_id)) THEN
+        __return := 1;
+    ELSE
+        __return := -2;
+    END IF;
+
+    IF __return = 1 THEN
+            UPDATE cliente
+            SET
+                c_credito  = _new_status
+            WHERE numero_cuenta = _change_id;
+
+            GET DIAGNOSTICS __RW = ROW_COUNT;
+
+    END IF;
+
+        IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
+            __return := 1;
+        ELSE
+            __return := -2;
+        END IF;
+
+        RETURN __return;
+END;
+$$;
+alter function fn_cliente_cambiar_status_credito(uuid, boolean) owner to postgres;
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_cliente_cambiar_status_ahorro(_change_id uuid, _new_status boolean)
+    returns integer
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_cliente_cambiar_status_ahorro
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __RW     integer;
+    __return integer := -1;
+BEGIN
+    IF (select exists(select 1 from cliente where numero_cuenta = _change_id)) THEN
+        __return := 1;
+    ELSE
+        __return := -2;
+    END IF;
+
+    IF __return = 1 THEN
+            UPDATE cliente
+            SET
+                c_ahorro  = _new_status
+            WHERE numero_cuenta = _change_id;
+
+            GET DIAGNOSTICS __RW = ROW_COUNT;
+
+    END IF;
+
+        IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
+            __return := 1;
+        ELSE
+            __return := -2;
+        END IF;
+
+        RETURN __return;
+END;
+$$;
+alter function fn_cliente_cambiar_status_ahorro(uuid, boolean) owner to postgres;
+
 
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_cliente_obtener_listado()
@@ -837,7 +945,7 @@ create or replace function fn_cliente_obtener_listado()
                 cliente_id      integer,
                 user_access_id  integer,
                 sucursal_id     integer,
-                numero_cuenta uuid,
+                numero_cuenta   uuid,
                 nombre          character varying,
                 apellidos       character varying,
                 correo          character varying,
@@ -956,216 +1064,216 @@ END;
 $$;
 alter function fn_cliente_eliminar_id(integer) owner to postgres;
 
-
--- ----------------------------------------------------------------------------------- --
-create or replace function fn_transaccion_insertar(
-    _transaction_id integer, _folio integer, _cliente_id integer, _sucursal_id integer, _fh_registro timestamptz,
-    _fh_modificacion timestamptz, _usr_registra_id integer, _usr_modifica_id integer
-) returns integer
-    language plpgsql
-as
-$$
-/******************************************************************************
-NOMBRE: fn_transaccion_insertar
-OBJETIVO:
-RETORNA:
-******************************************************************************/
-DECLARE
-    __RW                 integer;
-    __tmp_transaction_id transaction.transaction_id%TYPE;
-    __return             integer := -1;
-BEGIN
-
-    INSERT INTO transaction(transaction_id, folio, cliente_id, sucursal_id, fh_registro,
-                            fh_modificacion, usr_registra_id, usr_modifica_id)
-    VALUES (_transaction_id, _folio, _cliente_id, _sucursal_id, _fh_registro,
-            _fh_modificacion, _usr_registra_id, _usr_modifica_id);
-
-    GET DIAGNOSTICS __RW = ROW_COUNT;
-
-    IF __RW = 1 THEN
-        __tmp_transaction_id = (SELECT nextval('transaction_id_seq'));
-
-        __return := __tmp_transaction_id;
-    ELSE
-        __return := -1;
-    END IF;
-
-    RETURN __return;
-END
-$$;
-alter function fn_transaccion_insertar(
-    integer, integer, integer, integer, timestamptz, timestamptz, integer, integer
-    ) owner to postgres;
-
-
--- ----------------------------------------------------------------------------------- --
-create or replace function fn_transaccion_actualizar(
-    _transaction_id integer, _folio integer, _cliente_id integer, _sucursal_id integer, _fh_registro timestamptz,
-    _fh_modificacion timestamptz, _usr_registra_id integer, _usr_modifica_id integer
-) returns integer
-    language plpgsql
-as
-$$
-/******************************************************************************
-NOMBRE: fn_transaccion_actualizar
-OBJETIVO:
-RETORNA:
-******************************************************************************/
-DECLARE
-    __RW     integer;
-    __return integer := -1;
-BEGIN
-
-    UPDATE transaction
-    SET folio=_folio,
-        cliente_id=_cliente_id,
-        sucursal_id=_sucursal_id,
-        fh_registro=_fh_registro,
-        fh_modificacion =_fh_modificacion,
-        usr_registra_id=_usr_registra_id,
-        usr_modifica_id =_usr_modifica_id
-    WHERE transaction_id = _transaction_id;
-
-    GET DIAGNOSTICS __RW = ROW_COUNT;
-
-    IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
-        __return := 1;
-    ELSE
-        __return := -2;
-    END IF;
-
-    RETURN __return;
-END
-$$;
-alter function fn_transaccion_actualizar(
-    integer, integer, integer, integer, timestamptz, timestamptz, integer, integer
-    ) owner to postgres;
-
--- ----------------------------------------------------------------------------------- --
-create or replace function fn_transaccion_obtener_id(_transaction_id integer)
-    returns SETOF vw_transaccion
-    language plpgsql
-as
-$$
-/******************************************************************************
-NOMBRE: fn_transaccion_obtener_id
-OBJETIVO:
-RETORNA:
-******************************************************************************/
-DECLARE
-    __record vw_transaccion;
-BEGIN
-    FOR __record IN SELECT * FROM vw_transaccion WHERE transaction_id = _transaction_id
-        LOOP
-            RETURN NEXT __record;
-        END LOOP;
-END;
-$$;
-alter function fn_transaccion_obtener_id(integer) owner to postgres;
-
--- ----------------------------------------------------------------------------------- --
-create or replace function fn_transaccion_obtener_listado()
-    returns TABLE
-            (
-                transaction_id  integer,
-                folio           integer,
-                cliente_id      integer,
-                sucursal_id     integer,
-                fh_registro     timestamptz,
-                fh_modificacion timestamptz,
-                usr_registra_id integer,
-                usr_registra    character varying,
-                usr_modifica_id integer,
-                usr_modifica    character varying,
-                total_count     bigint
-            )
-    language plpgsql
-as
-$$
-/******************************************************************************
-NOMBRE: fn_transaccion_obtener_listado
-OBJETIVO:
-RETORNA:
-******************************************************************************/
-DECLARE
-    __record record;
-    __query  text;
-BEGIN
-
-    __query := 'SELECT * ,COUNT(transaction_id) OVER() AS total_count FROM vw_transaccion ORDER BY transaction_id DESC';
-
-    FOR __record IN EXECUTE __query
-        LOOP
-            transaction_id := __record.transaction_id;
-            folio := __record.folio;
-            cliente_id := __record.cliente_id;
-            sucursal_id := __record.sucursal_id;
-            fh_registro := __record.fh_registro;
-            fh_modificacion := __record.fh_modificacion;
-            usr_registra_id := __record.usr_registra_id;
-            usr_registra := __record.usr_registra;
-            usr_modifica_id := __record.usr_modifica_id;
-            usr_modifica := __record.usr_modifica;
-            total_count := __record.total_count;
-            RETURN NEXT;
-        END LOOP;
-END;
-$$;
-alter function fn_transaccion_obtener_listado() owner to postgres;
-
-
--- ----------------------------------------------------------------------------------- --
-create or replace function fn_transaccion_obtener_ultimo_id()
-    RETURNS integer
-    language plpgsql
-AS
-$$
-/******************************************************************************
-NOMBRE: fn_transaccion_obtener_ultimo_id
-OBJETIVO:
-******************************************************************************/
-DECLARE
-BEGIN
-    RETURN (SELECT transaction_id AS transaction_id FROM transaction ORDER BY transaction_id DESC LIMIT 1);
-END
-$$;
-alter function fn_transaccion_obtener_ultimo_id() owner to postgres;
-
-
--- ----------------------------------------------------------------------------------- --
-create or replace function fn_transaccion_eliminar_id(_transaction_id integer) returns integer
-    language plpgsql
-as
-$$
-/******************************************************************************
-NOMBRE: fn_transaccion_eliminar_id
-OBJETIVO:
-RETORNA:
-******************************************************************************/
-DECLARE
-    __RW     integer;
-    __return integer := -1;
-BEGIN
-    DELETE FROM transaction WHERE transaction_id = _transaction_id;
-    GET DIAGNOSTICS __RW = ROW_COUNT;
-
-    IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
-        __return := 1;
-    ELSE
-        __return := -2;
-    END IF;
-
-    RETURN __return;
-END;
-$$;
-alter function fn_transaccion_eliminar_id(integer) owner to postgres;
-
+--
+-- -- ----------------------------------------------------------------------------------- --
+-- create or replace function fn_transaccion_insertar(
+--     _transaction_id integer, _folio integer, _cliente_id integer, _sucursal_id integer, _fh_registro timestamptz,
+--     _fh_modificacion timestamptz, _usr_registra_id integer, _usr_modifica_id integer
+-- ) returns integer
+--     language plpgsql
+-- as
+-- $$
+-- /******************************************************************************
+-- NOMBRE: fn_transaccion_insertar
+-- OBJETIVO:
+-- RETORNA:
+-- ******************************************************************************/
+-- DECLARE
+--     __RW                 integer;
+--     __tmp_transaction_id transaction.transaction_id%TYPE;
+--     __return             integer := -1;
+-- BEGIN
+--
+--     INSERT INTO transaction(transaction_id, folio, cliente_id, sucursal_id, fh_registro,
+--                             fh_modificacion, usr_registra_id, usr_modifica_id)
+--     VALUES (_transaction_id, _folio, _cliente_id, _sucursal_id, _fh_registro,
+--             _fh_modificacion, _usr_registra_id, _usr_modifica_id);
+--
+--     GET DIAGNOSTICS __RW = ROW_COUNT;
+--
+--     IF __RW = 1 THEN
+--         __tmp_transaction_id = (SELECT nextval('transaction_id_seq'));
+--
+--         __return := __tmp_transaction_id;
+--     ELSE
+--         __return := -1;
+--     END IF;
+--
+--     RETURN __return;
+-- END
+-- $$;
+-- alter function fn_transaccion_insertar(
+--     integer, integer, integer, integer, timestamptz, timestamptz, integer, integer
+--     ) owner to postgres;
+--
+--
+-- -- ----------------------------------------------------------------------------------- --
+-- create or replace function fn_transaccion_actualizar(
+--     _transaction_id integer, _folio integer, _cliente_id integer, _sucursal_id integer, _fh_registro timestamptz,
+--     _fh_modificacion timestamptz, _usr_registra_id integer, _usr_modifica_id integer
+-- ) returns integer
+--     language plpgsql
+-- as
+-- $$
+-- /******************************************************************************
+-- NOMBRE: fn_transaccion_actualizar
+-- OBJETIVO:
+-- RETORNA:
+-- ******************************************************************************/
+-- DECLARE
+--     __RW     integer;
+--     __return integer := -1;
+-- BEGIN
+--
+--     UPDATE transaction
+--     SET folio=_folio,
+--         cliente_id=_cliente_id,
+--         sucursal_id=_sucursal_id,
+--         fh_registro=_fh_registro,
+--         fh_modificacion =_fh_modificacion,
+--         usr_registra_id=_usr_registra_id,
+--         usr_modifica_id =_usr_modifica_id
+--     WHERE transaction_id = _transaction_id;
+--
+--     GET DIAGNOSTICS __RW = ROW_COUNT;
+--
+--     IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
+--         __return := 1;
+--     ELSE
+--         __return := -2;
+--     END IF;
+--
+--     RETURN __return;
+-- END
+-- $$;
+-- alter function fn_transaccion_actualizar(
+--     integer, integer, integer, integer, timestamptz, timestamptz, integer, integer
+--     ) owner to postgres;
+--
+-- -- ----------------------------------------------------------------------------------- --
+-- create or replace function fn_transaccion_obtener_id(_transaction_id integer)
+--     returns SETOF vw_transaccion
+--     language plpgsql
+-- as
+-- $$
+-- /******************************************************************************
+-- NOMBRE: fn_transaccion_obtener_id
+-- OBJETIVO:
+-- RETORNA:
+-- ******************************************************************************/
+-- DECLARE
+--     __record vw_transaccion;
+-- BEGIN
+--     FOR __record IN SELECT * FROM vw_transaccion WHERE transaction_id = _transaction_id
+--         LOOP
+--             RETURN NEXT __record;
+--         END LOOP;
+-- END;
+-- $$;
+-- alter function fn_transaccion_obtener_id(integer) owner to postgres;
+--
+-- -- ----------------------------------------------------------------------------------- --
+-- create or replace function fn_transaccion_obtener_listado()
+--     returns TABLE
+--             (
+--                 transaction_id  integer,
+--                 folio           integer,
+--                 cliente_id      integer,
+--                 sucursal_id     integer,
+--                 fh_registro     timestamptz,
+--                 fh_modificacion timestamptz,
+--                 usr_registra_id integer,
+--                 usr_registra    character varying,
+--                 usr_modifica_id integer,
+--                 usr_modifica    character varying,
+--                 total_count     bigint
+--             )
+--     language plpgsql
+-- as
+-- $$
+-- /******************************************************************************
+-- NOMBRE: fn_transaccion_obtener_listado
+-- OBJETIVO:
+-- RETORNA:
+-- ******************************************************************************/
+-- DECLARE
+--     __record record;
+--     __query  text;
+-- BEGIN
+--
+--     __query := 'SELECT * ,COUNT(transaction_id) OVER() AS total_count FROM vw_transaccion ORDER BY transaction_id DESC';
+--
+--     FOR __record IN EXECUTE __query
+--         LOOP
+--             transaction_id := __record.transaction_id;
+--             folio := __record.folio;
+--             cliente_id := __record.cliente_id;
+--             sucursal_id := __record.sucursal_id;
+--             fh_registro := __record.fh_registro;
+--             fh_modificacion := __record.fh_modificacion;
+--             usr_registra_id := __record.usr_registra_id;
+--             usr_registra := __record.usr_registra;
+--             usr_modifica_id := __record.usr_modifica_id;
+--             usr_modifica := __record.usr_modifica;
+--             total_count := __record.total_count;
+--             RETURN NEXT;
+--         END LOOP;
+-- END;
+-- $$;
+-- alter function fn_transaccion_obtener_listado() owner to postgres;
+--
+--
+-- -- ----------------------------------------------------------------------------------- --
+-- create or replace function fn_transaccion_obtener_ultimo_id()
+--     RETURNS integer
+--     language plpgsql
+-- AS
+-- $$
+-- /******************************************************************************
+-- NOMBRE: fn_transaccion_obtener_ultimo_id
+-- OBJETIVO:
+-- ******************************************************************************/
+-- DECLARE
+-- BEGIN
+--     RETURN (SELECT transaction_id AS transaction_id FROM transaction ORDER BY transaction_id DESC LIMIT 1);
+-- END
+-- $$;
+-- alter function fn_transaccion_obtener_ultimo_id() owner to postgres;
+--
+--
+-- -- ----------------------------------------------------------------------------------- --
+-- create or replace function fn_transaccion_eliminar_id(_transaction_id integer) returns integer
+--     language plpgsql
+-- as
+-- $$
+-- /******************************************************************************
+-- NOMBRE: fn_transaccion_eliminar_id
+-- OBJETIVO:
+-- RETORNA:
+-- ******************************************************************************/
+-- DECLARE
+--     __RW     integer;
+--     __return integer := -1;
+-- BEGIN
+--     DELETE FROM transaction WHERE transaction_id = _transaction_id;
+--     GET DIAGNOSTICS __RW = ROW_COUNT;
+--
+--     IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
+--         __return := 1;
+--     ELSE
+--         __return := -2;
+--     END IF;
+--
+--     RETURN __return;
+-- END;
+-- $$;
+-- alter function fn_transaccion_eliminar_id(integer) owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_credit_insertar(
-    _credit_id integer, _transaction_id integer, _documento_id integer, _cobrado numeric, _por_cobrar numeric,
+    _credit_id integer, _tipo_cuenta integer, _numero_cuenta uuid, _documento_id integer, _cobrado numeric,
+    _por_cobrar numeric,
     _total numeric, _status_id integer
 ) returns integer
     language plpgsql
@@ -1182,8 +1290,10 @@ DECLARE
     __return        integer := -1;
 BEGIN
 
-    INSERT INTO transaction_credit(credit_id, transaction_id, documento_id, cobrado, por_cobrar, total, status_id)
-    VALUES (_credit_id, _transaction_id, _documento_id, _cobrado, _por_cobrar, _total, _status_id);
+    INSERT INTO transaction_credit(credit_id, tipo_cuenta, numero_cuenta, documento_id,
+                                   cobrado, por_cobrar, total, status_id)
+    VALUES (_credit_id, _tipo_cuenta, _numero_cuenta, _documento_id,
+            _cobrado, _por_cobrar, _total, _status_id);
 
     GET DIAGNOSTICS __RW = ROW_COUNT;
 
@@ -1199,13 +1309,14 @@ BEGIN
 END
 $$;
 alter function fn_transaction_credit_insertar(
-    integer, integer, integer, numeric, numeric, numeric, integer
+    integer, integer, uuid, integer, numeric, numeric, numeric, integer
     ) owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_credit_actualizar(
-    _credit_id integer, _transaction_id integer, _documento_id integer, _cobrado numeric, _por_cobrar numeric,
+    _credit_id integer, _tipo_cuenta integer, _numero_cuenta uuid, _documento_id integer, _cobrado numeric,
+    _por_cobrar numeric,
     _total numeric, _status_id integer
 ) returns integer
     language plpgsql
@@ -1222,12 +1333,13 @@ DECLARE
 BEGIN
 
     UPDATE transaction_credit
-    SET transaction_id=_transaction_id,
+    SET numero_cuenta=_numero_cuenta,
+        tipo_cuenta=_tipo_cuenta,
         documento_id=_documento_id,
-        cobrado       =_cobrado,
+        cobrado      =_cobrado,
         por_cobrar=_por_cobrar,
-        total         =_total,
-        status_id     =_status_id
+        total        =_total,
+        status_id    =_status_id
     WHERE credit_id = _credit_id;
 
     GET DIAGNOSTICS __RW = ROW_COUNT;
@@ -1242,7 +1354,7 @@ BEGIN
 END
 $$;
 alter function fn_transaction_credit_actualizar(
-    integer, integer, integer, numeric, numeric, numeric, integer
+    integer, integer, uuid, integer, numeric, numeric, numeric, integer
     ) owner to postgres;
 
 
@@ -1270,25 +1382,43 @@ alter function fn_transaction_credit_obtener_id(integer) owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
+create or replace function fn_transaction_credit_obtener_uuid(_numero_cuenta uuid)
+    returns SETOF vw_transaccion_credito
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_transaction_credit_obtener_uuid
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __record vw_transaccion_credito;
+BEGIN
+    FOR __record IN SELECT * FROM vw_transaccion_credito WHERE numero_cuenta = _numero_cuenta
+        LOOP
+            RETURN NEXT __record;
+        END LOOP;
+END;
+$$;
+alter function fn_transaction_credit_obtener_uuid(uuid) owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_credit_obtener_listado()
     returns TABLE
             (
-                credit_id       integer,
-                transaction_id  integer,
-                documento_id    integer,
-                documento_txt   character varying,
-                nombre_sucursal character varying,
-                cobrado         numeric,
-                por_cobrar      numeric,
-                cobrado_txt     character varying,
-                total           numeric,
-                fh_registro     timestamptz,
-                fh_modificacion timestamptz,
-                usr_registra_id integer,
-                usr_registra    character varying,
-                usr_modifica_id integer,
-                usr_modifica    character varying,
-                total_count     bigint
+                credit_id     integer,
+                tipo_cuenta   integer,
+                numero_cuenta uuid,
+                documento_id  integer,
+                documento_txt character varying,
+                cobrado       numeric,
+                por_cobrar    numeric,
+                cobrado_txt   character varying,
+                total         numeric,
+                status_id     integer,
+                status_txt    character varying
             )
     language plpgsql
 as
@@ -1303,26 +1433,21 @@ DECLARE
     __query  text;
 BEGIN
 
-    __query := 'SELECT * ,COUNT(credit_id) OVER() AS total_count FROM vw_transaccion_credito ORDER BY credit_id DESC';
+    __query := 'SELECT *  FROM vw_transaccion_credito ORDER BY credit_id DESC';
 
     FOR __record IN EXECUTE __query
         LOOP
             credit_id := __record.credit_id;
-            transaction_id := __record.transaction_id;
+            tipo_cuenta := __record.tipo_cuenta;
+            numero_cuenta := __record.numero_cuenta;
             documento_id := __record.documento_id;
             documento_txt := __record.documento_txt;
-            nombre_sucursal := __record.nombre_sucursal;
             cobrado := __record.cobrado;
             por_cobrar := __record.por_cobrar;
             cobrado_txt := __record.cobrado_txt;
             total := __record.total;
-            fh_registro := __record.fh_registro;
-            fh_modificacion := __record.fh_modificacion;
-            usr_registra_id := __record.usr_registra_id;
-            usr_registra := __record.usr_registra;
-            usr_modifica_id := __record.usr_modifica_id;
-            usr_modifica := __record.usr_modifica;
-            total_count := __record.total_count;
+            status_id := __record.status_id;
+            status_txt := __record.status_txt;
             RETURN NEXT;
         END LOOP;
 END;
@@ -1380,7 +1505,8 @@ alter function fn_transaction_credit_eliminar_id(integer) owner to postgres;
 
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_saving_insertar(
-    _saving_id integer, _transaction_id integer, _documento_id integer, _cantidad numeric, _total numeric
+    _saving_id integer, _tipo_cuenta integer, _apertura integer, _numero_cuenta uuid, _documento_id integer, _cantidad numeric,
+    _total numeric
 ) returns integer
     language plpgsql
 as
@@ -1396,8 +1522,8 @@ DECLARE
     __return        integer := -1;
 BEGIN
 
-    INSERT INTO transaction_saving(saving_id, transaction_id, documento_id, cantidad, total)
-    VALUES (_saving_id, _transaction_id, _documento_id, _cantidad, _total);
+    INSERT INTO transaction_saving(saving_id, tipo_cuenta, apertura, numero_cuenta, documento_id, cantidad, total)
+    VALUES (_saving_id, _tipo_cuenta, _apertura, _numero_cuenta, _documento_id, _cantidad, _total);
 
     GET DIAGNOSTICS __RW = ROW_COUNT;
 
@@ -1413,13 +1539,14 @@ BEGIN
 END
 $$;
 alter function fn_transaction_saving_insertar(
-    integer, integer, integer, numeric, numeric
+    integer, integer, integer, uuid, integer, numeric, numeric
     ) owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_saving_actualizar(
-    _saving_id integer, _transaction_id integer, _documento_id integer, _cantidad numeric, _total numeric
+    _saving_id integer, _tipo_cuenta integer, _apertura integer, _numero_cuenta uuid, _documento_id integer, _cantidad numeric,
+    _total numeric
 ) returns integer
     language plpgsql
 as
@@ -1435,10 +1562,13 @@ DECLARE
 BEGIN
 
     UPDATE transaction_saving
-    SET transaction_id =_transaction_id,
+    SET tipo_cuenta=_tipo_cuenta,
+        apertura=_apertura,
+        numero_cuenta=_numero_cuenta,
         documento_id=_documento_id,
         cantidad=_cantidad,
-        total          =_total
+        total =_total
+
     WHERE saving_id = _saving_id;
 
     GET DIAGNOSTICS __RW = ROW_COUNT;
@@ -1453,7 +1583,7 @@ BEGIN
 END
 $$;
 alter function fn_transaction_saving_actualizar(
-    integer, integer, integer, numeric, numeric
+    integer, integer, integer, uuid, integer, numeric, numeric
     ) owner to postgres;
 
 
@@ -1481,23 +1611,40 @@ alter function fn_transaction_saving_obtener_id(integer) owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
+create or replace function fn_transaction_saving_obtener_uuid(_numero_cuenta uuid)
+    returns SETOF vw_transaccion_ahorro
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_transaction_saving_obtener_uuid
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __record vw_transaccion_ahorro;
+BEGIN
+    FOR __record IN SELECT * FROM vw_transaccion_ahorro WHERE numero_cuenta = _numero_cuenta
+        LOOP
+            RETURN NEXT __record;
+        END LOOP;
+END;
+$$;
+alter function fn_transaction_saving_obtener_uuid(uuid) owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_saving_obtener_listado()
     returns TABLE
             (
-                saving_id       integer,
-                transaction_id  integer,
-                documento_id    integer,
-                documento_txt   character varying,
-                nombre_sucursal character varying,
-                cantidad        numeric,
-                total           numeric,
-                fh_registro     timestamptz,
-                fh_modificacion timestamptz,
-                usr_registra_id integer,
-                usr_registra    character varying,
-                usr_modifica_id integer,
-                usr_modifica    character varying,
-                total_count     bigint
+                saving_id     integer,
+                tipo_cuenta   integer,
+                apertura integer,
+                numero_cuenta uuid,
+                documento_id  integer,
+                documento_txt character varying,
+                cantidad      numeric,
+                total         numeric
             )
     language plpgsql
 as
@@ -1512,24 +1659,18 @@ DECLARE
     __query  text;
 BEGIN
 
-    __query := 'SELECT * ,COUNT(saving_id) OVER() AS total_count FROM vw_transaccion_ahorro ORDER BY saving_id DESC';
+    __query := 'SELECT * FROM vw_transaccion_ahorro ORDER BY saving_id DESC';
 
     FOR __record IN EXECUTE __query
         LOOP
             saving_id := __record.saving_id;
-            transaction_id := __record.transaction_id;
+            tipo_cuenta := __record.tipo_cuenta;
+            apertura := __record.apertura;
+            numero_cuenta := __record.numero_cuenta;
             documento_id := __record.documento_id;
             documento_txt := __record.documento_txt;
-            nombre_sucursal := __record.nombre_sucursal;
             cantidad := __record.cantidad;
             total := __record.total;
-            fh_registro := __record.fh_registro;
-            fh_modificacion := __record.fh_modificacion;
-            usr_registra_id := __record.usr_registra_id;
-            usr_registra := __record.usr_registra;
-            usr_modifica_id := __record.usr_modifica_id;
-            usr_modifica := __record.usr_modifica;
-            total_count := __record.total_count;
             RETURN NEXT;
         END LOOP;
 END;
@@ -1799,3 +1940,50 @@ BEGIN
 END;
 $$;
 alter function fn_tower_eliminar_id(integer) owner to postgres;
+
+
+
+-- ----------------------------------------------------------------------------------- --
+-- create or replace function fn_cuenta_ahorro_obtener_id(_cliente_id integer)
+--     returns SETOF vw_cuenta_ahorro
+--     language plpgsql
+-- as
+-- $$
+-- /******************************************************************************
+-- NOMBRE: fn_cuenta_ahorro_obtener_id
+-- OBJETIVO:
+-- RETORNA:
+-- ******************************************************************************/
+-- DECLARE
+--     __record vw_cuenta_ahorro;
+-- BEGIN
+--     FOR __record IN SELECT * FROM vw_cuenta_ahorro WHERE cliente_id = _cliente_id ORDER BY saving_id DESC
+--         LOOP
+--             RETURN NEXT __record;
+--         END LOOP;
+-- END;
+-- $$;
+-- alter function fn_cuenta_ahorro_obtener_id(integer) owner to postgres;
+
+
+-- ----------------------------------------------------------------------------------- --
+-- create or replace function fn_cuenta_credito_obtener_id(_cliente_id integer)
+--     returns SETOF vw_cuenta_credito
+--     language plpgsql
+-- as
+-- $$
+-- /******************************************************************************
+-- NOMBRE: fn_cuenta_credito_obtener_id
+-- OBJETIVO:
+-- RETORNA:
+-- ******************************************************************************/
+-- DECLARE
+--     __record vw_cuenta_credito;
+-- BEGIN
+--     FOR __record IN SELECT * FROM vw_cuenta_credito WHERE cliente_id = _cliente_id ORDER BY credit_id DESC
+--         LOOP
+--             RETURN NEXT __record;
+--         END LOOP;
+-- END;
+-- $$;
+-- alter function fn_cuenta_credito_obtener_id(integer) owner to postgres;
