@@ -14,7 +14,7 @@ namespace SavingService.Domain.Core
 
         public TransactionSavingDomain(ITransactionSavingRepository transactionSavingRepository)
         {
-            _transactionSavingRepository  = transactionSavingRepository;
+            _transactionSavingRepository = transactionSavingRepository;
         }
 
         #region Synchronous Methods
@@ -44,6 +44,10 @@ namespace SavingService.Domain.Core
             return _transactionSavingRepository.GetAll();
         }
 
+        public int GetLast()
+        {
+            return _transactionSavingRepository.GetLast();
+        }
         #endregion
 
         #region Asynchronous Methods

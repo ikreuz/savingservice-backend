@@ -29,7 +29,8 @@ namespace SavingService.Infrastructure.Repository
                 var query = _pathToQuery + "_insertar";
                 var parameters = new DynamicParameters();
                 parameters.Add("@_credit_id", transaction.Credit_Id);
-                parameters.Add("@_transaction_id", transaction.Transaction_Id);
+                parameters.Add("@_tipo_cuenta", transaction.Tipo_Cuenta);
+                parameters.Add("@_numero_cuenta", transaction.Numero_Cuenta);
                 parameters.Add("@_documento_id", transaction.Documento_Id);
                 parameters.Add("@_cobrado", transaction.Cobrado);
                 parameters.Add("@_por_cobrar", transaction.Por_Cobrar);
@@ -48,7 +49,8 @@ namespace SavingService.Infrastructure.Repository
                 var query = _pathToQuery + "_actualizar";
                 var parameters = new DynamicParameters();
                 parameters.Add("@_credit_id", transaction.Credit_Id);
-                parameters.Add("@_transaction_id", transaction.Transaction_Id);
+                parameters.Add("@_tipo_cuenta", transaction.Tipo_Cuenta);
+                parameters.Add("@_numero_cuenta", transaction.Numero_Cuenta);
                 parameters.Add("@_documento_id", transaction.Documento_Id);
                 parameters.Add("@_cobrado", transaction.Cobrado);
                 parameters.Add("@_por_cobrar", transaction.Por_Cobrar);
@@ -106,7 +108,8 @@ namespace SavingService.Infrastructure.Repository
                 var query = _pathToQuery + "_insertar";
                 var parameters = new DynamicParameters();
                 parameters.Add("@_credit_id", transaction.Credit_Id);
-                parameters.Add("@_transaction_id", transaction.Transaction_Id);
+                parameters.Add("@_tipo_cuenta", transaction.Tipo_Cuenta);
+                parameters.Add("@_numero_cuenta", transaction.Numero_Cuenta);
                 parameters.Add("@_documento_id", transaction.Documento_Id);
                 parameters.Add("@_cobrado", transaction.Cobrado);
                 parameters.Add("@_por_cobrar", transaction.Por_Cobrar);
@@ -125,7 +128,8 @@ namespace SavingService.Infrastructure.Repository
                 var query = _pathToQuery + "_actualizar";
                 var parameters = new DynamicParameters();
                 parameters.Add("@_credit_id", transaction.Credit_Id);
-                parameters.Add("@_transaction_id", transaction.Transaction_Id);
+                parameters.Add("@_tipo_cuenta", transaction.Tipo_Cuenta);
+                parameters.Add("@_numero_cuenta", transaction.Numero_Cuenta);
                 parameters.Add("@_documento_id", transaction.Documento_Id);
                 parameters.Add("@_cobrado", transaction.Cobrado);
                 parameters.Add("@_por_cobrar", transaction.Por_Cobrar);

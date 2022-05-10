@@ -28,8 +28,10 @@ namespace SavingService.Infrastructure.Repository
             {
                 var query = _pathToQuery + "_insertar";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_saving_id", transaction.Saving_ID);
-                parameters.Add("@_transaction_id", transaction.Transaction_Id);
+                parameters.Add("@_saving_id", transaction.Saving_Id);
+                parameters.Add("@_tipo_cuenta", transaction.Tipo_Cuenta);
+                parameters.Add("@_apertura", transaction.Apertura);
+                parameters.Add("@_numero_cuenta", transaction.Numero_Cuenta);
                 parameters.Add("@_documento_id", transaction.Documento_Id);
                 parameters.Add("@_cantidad", transaction.Cantidad);
                 parameters.Add("@_total", transaction.Total);
@@ -45,11 +47,14 @@ namespace SavingService.Infrastructure.Repository
             {
                 var query = _pathToQuery + "_actualizar";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_saving_id", transaction.Saving_ID);
-                parameters.Add("@_transaction_id", transaction.Transaction_Id);
+                parameters.Add("@_saving_id", transaction.Saving_Id);
+                parameters.Add("@_tipo_cuenta", transaction.Tipo_Cuenta);
+                parameters.Add("@_apertura", transaction.Apertura);
+                parameters.Add("@_numero_cuenta", transaction.Numero_Cuenta);
                 parameters.Add("@_documento_id", transaction.Documento_Id);
                 parameters.Add("@_cantidad", transaction.Cantidad);
                 parameters.Add("@_total", transaction.Total);
+
 
                 var result = connection.QueryFirstOrDefault<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
@@ -91,6 +96,17 @@ namespace SavingService.Infrastructure.Repository
                 return transaction;
             }
         }
+
+        public int GetLast()
+        {
+            using (var connection = _connectionFactory.GetConnection)
+            {
+                var query = _pathToQuery + "_obtener_ultimo_id";
+
+                var customer = connection.QueryFirstOrDefault<int>(query, commandType: CommandType.StoredProcedure);
+                return customer;
+            }
+        }
         #endregion
 
 
@@ -101,11 +117,14 @@ namespace SavingService.Infrastructure.Repository
             {
                 var query = _pathToQuery + "_insertar";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_saving_id", transaction.Saving_ID);
-                parameters.Add("@_transaction_id", transaction.Transaction_Id);
+                parameters.Add("@_saving_id", transaction.Saving_Id);
+                parameters.Add("@_tipo_cuenta", transaction.Tipo_Cuenta);
+                parameters.Add("@_apertura", transaction.Apertura);
+                parameters.Add("@_numero_cuenta", transaction.Numero_Cuenta);
                 parameters.Add("@_documento_id", transaction.Documento_Id);
                 parameters.Add("@_cantidad", transaction.Cantidad);
                 parameters.Add("@_total", transaction.Total);
+
 
                 var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;
@@ -118,11 +137,14 @@ namespace SavingService.Infrastructure.Repository
             {
                 var query = _pathToQuery + "_actualizar";
                 var parameters = new DynamicParameters();
-                parameters.Add("@_saving_id", transaction.Saving_ID);
-                parameters.Add("@_transaction_id", transaction.Transaction_Id);
+                parameters.Add("@_saving_id", transaction.Saving_Id);
+                parameters.Add("@_tipo_cuenta", transaction.Tipo_Cuenta);
+                parameters.Add("@_apertura", transaction.Apertura);
+                parameters.Add("@_numero_cuenta", transaction.Numero_Cuenta);
                 parameters.Add("@_documento_id", transaction.Documento_Id);
                 parameters.Add("@_cantidad", transaction.Cantidad);
                 parameters.Add("@_total", transaction.Total);
+
 
                 var result = await connection.QueryFirstOrDefaultAsync<int>(query, param: parameters, commandType: CommandType.StoredProcedure);
                 return result > 0;

@@ -8,7 +8,8 @@ namespace SavingService.Domain.Entity
     {
         #region Properties
         public int Credit_Id { get; set; }
-        public int Transaction_Id { get; set; }
+        public int Tipo_Cuenta { get; set; }
+        public Guid Numero_Cuenta { get; set; }
         public int Documento_Id { get; set; }
         public decimal Cobrado { get; set; }
 

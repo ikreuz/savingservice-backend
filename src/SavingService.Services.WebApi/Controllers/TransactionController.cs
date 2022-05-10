@@ -11,133 +11,133 @@ namespace SavingService.Services.WebApi.Controllers
     [ApiController]
     public class TransactionController : ControllerBase
     {
-        private readonly ITransactionApplication _transactionApplication;
-        public TransactionController(ITransactionApplication transactionApplication)
-        {
-            _transactionApplication = transactionApplication;
-        }
+        //private readonly ITransactionApplication _transactionApplication;
+        //public TransactionController(ITransactionApplication transactionApplication)
+        //{
+        //    _transactionApplication = transactionApplication;
+        //}
 
 
-        #region Synchronous Methods
+        //#region Synchronous Methods
 
-        [HttpPost("insert")]
-        public IActionResult Insert([FromBody] TransactionDto transactionDto)
-        {
-            if (transactionDto == null) return BadRequest();
+        //[HttpPost("insert")]
+        //public IActionResult Insert([FromBody] TransactionDto transactionDto)
+        //{
+        //    if (transactionDto == null) return BadRequest();
 
-            var response = _transactionApplication.Insert(transactionDto);
+        //    var response = _transactionApplication.Insert(transactionDto);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        [HttpPut("update")]
-        public IActionResult Update([FromBody] TransactionDto transactionDto)
-        {
-            if (transactionDto == null) return BadRequest();
+        //[HttpPut("update")]
+        //public IActionResult Update([FromBody] TransactionDto transactionDto)
+        //{
+        //    if (transactionDto == null) return BadRequest();
 
-            var response = _transactionApplication.Update(transactionDto);
+        //    var response = _transactionApplication.Update(transactionDto);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        [HttpDelete("delete/{transactionId}")]
-        public IActionResult Delete(int transactionId)
-        {
-            if (transactionId <= 0) return BadRequest();
+        //[HttpDelete("delete/{transactionId}")]
+        //public IActionResult Delete(int transactionId)
+        //{
+        //    if (transactionId <= 0) return BadRequest();
 
-            var response = _transactionApplication.Delete(transactionId);
+        //    var response = _transactionApplication.Delete(transactionId);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        [HttpGet("get/{transactionId}")]
-        public IActionResult Get(int transactionId)
-        {
-            if (transactionId <= 0) return BadRequest();
+        //[HttpGet("get/{transactionId}")]
+        //public IActionResult Get(int transactionId)
+        //{
+        //    if (transactionId <= 0) return BadRequest();
 
-            var response = _transactionApplication.Get(transactionId);
+        //    var response = _transactionApplication.Get(transactionId);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
-        {
-            var response = _transactionApplication.GetAll();
+        //[HttpGet("getall")]
+        //public IActionResult GetAll()
+        //{
+        //    var response = _transactionApplication.GetAll();
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
-        #endregion
+        //    return BadRequest(response.Message);
+        //}
+        //#endregion
 
-        #region Asynchronous Methods
+        //#region Asynchronous Methods
 
-        [HttpPost("insertAsync{transactionDto}")]
-        public async Task<IActionResult> InsertAsync([FromBody] TransactionDto transactionDto)
-        {
-            if (transactionDto == null) return BadRequest();
+        //[HttpPost("insertAsync{transactionDto}")]
+        //public async Task<IActionResult> InsertAsync([FromBody] TransactionDto transactionDto)
+        //{
+        //    if (transactionDto == null) return BadRequest();
 
-            var response = await _transactionApplication.InsertAsync(transactionDto);
+        //    var response = await _transactionApplication.InsertAsync(transactionDto);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        [HttpPut("updateAsync/{transactionDto}")]
-        public async Task<IActionResult> UpdateAsync([FromBody] TransactionDto transactionDto)
-        {
-            if (transactionDto == null) return BadRequest();
+        //[HttpPut("updateAsync/{transactionDto}")]
+        //public async Task<IActionResult> UpdateAsync([FromBody] TransactionDto transactionDto)
+        //{
+        //    if (transactionDto == null) return BadRequest();
 
-            var response = await _transactionApplication.UpdateAsync(transactionDto);
+        //    var response = await _transactionApplication.UpdateAsync(transactionDto);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        [HttpDelete("deleteAsync/{transactionId}")]
-        public async Task<IActionResult> DeleteAsync(int transactionId)
-        {
-            if (transactionId <= 0) return BadRequest();
+        //[HttpDelete("deleteAsync/{transactionId}")]
+        //public async Task<IActionResult> DeleteAsync(int transactionId)
+        //{
+        //    if (transactionId <= 0) return BadRequest();
 
-            var response = await _transactionApplication.DeleteAsync(transactionId);
+        //    var response = await _transactionApplication.DeleteAsync(transactionId);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        [HttpGet("getAsync/{transactionId}")]
-        public async Task<IActionResult> GetAsync(int transactionId)
-        {
-            if (transactionId <= 0) return BadRequest();
+        //[HttpGet("getAsync/{transactionId}")]
+        //public async Task<IActionResult> GetAsync(int transactionId)
+        //{
+        //    if (transactionId <= 0) return BadRequest();
 
-            var response = await _transactionApplication.GetAsync(transactionId);
+        //    var response = await _transactionApplication.GetAsync(transactionId);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        [HttpGet("getallAsync")]
-        public async Task<IActionResult> GetAllAsync()
-        {
-            var response = await _transactionApplication.GetAllAsync();
+        //[HttpGet("getallAsync")]
+        //public async Task<IActionResult> GetAllAsync()
+        //{
+        //    var response = await _transactionApplication.GetAllAsync();
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
-        #endregion
+        //    return BadRequest(response.Message);
+        //}
+        //#endregion
     }
 }

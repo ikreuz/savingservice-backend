@@ -213,9 +213,9 @@ namespace SavingService.Services.WebApi
             services.AddScoped<IUsersRepository, UsersRepository>();
 
             // Dependecy injection for transaction
-            services.AddScoped<ITransactionApplication, TransactionApplication>();
-            services.AddScoped<ITransactionDomain, TransactionDomain>();
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            //services.AddScoped<ITransactionApplication, TransactionApplication>();
+            //services.AddScoped<ITransactionDomain, TransactionDomain>();
+            //services.AddScoped<ITransactionRepository, TransactionRepository>();
 
             // Dependecy injection for transactionCredit
             services.AddScoped<ITransactionCreditApplication, TransactionCreditApplication>();
@@ -233,14 +233,14 @@ namespace SavingService.Services.WebApi
             services.AddScoped<ITowerRepository, TowerRepository>();
 
             // Dependecy injection for savingAccount
-            services.AddScoped<ISavingAccountApplication, SavingAccountApplication>();
-            services.AddScoped<ISavingAccountDomain, SavingAccountDomain>();
-            services.AddScoped<ISavingAccountRepository, SavingAccountRepository>();
+            //services.AddScoped<ISavingAccountApplication, SavingAccountApplication>();
+            //services.AddScoped<ISavingAccountDomain, SavingAccountDomain>();
+            //services.AddScoped<ISavingAccountRepository, SavingAccountRepository>();
 
-            // Dependecy injection for creditAccount
-            services.AddScoped<ICreditAccountApplication, CreditAccountApplication>();
-            services.AddScoped<ICreditAccountDomain, CreditAccountDomain>();
-            services.AddScoped<ICreditAccountRepository, CreditAccountRepository>();
+            //// Dependecy injection for creditAccount
+            //services.AddScoped<ICreditAccountApplication, CreditAccountApplication>();
+            //services.AddScoped<ICreditAccountDomain, CreditAccountDomain>();
+            //services.AddScoped<ICreditAccountRepository, CreditAccountRepository>();
             // Dependecy injection for logger
             //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 

@@ -9,43 +9,43 @@ namespace SavingService.Services.WebApi.Controllers
     [ApiController]
     public class CreditAccountController : ControllerBase
     {
-        private readonly ICreditAccountApplication _creditAccountApplication;
-        public CreditAccountController(ICreditAccountApplication creditAccountApplication)
-        {
-            _creditAccountApplication = creditAccountApplication;
-        }
+        //private readonly ICreditAccountApplication _creditAccountApplication;
+        //public CreditAccountController(ICreditAccountApplication creditAccountApplication)
+        //{
+        //    _creditAccountApplication = creditAccountApplication;
+        //}
 
 
-        #region Synchronous Methods
+        //#region Synchronous Methods
 
-        [HttpGet("get/{accountId}")]
-        public IActionResult GetAll(int accountId)
-        {
-            if (accountId <= 0) return BadRequest();
+        //[HttpGet("get/{accountId}")]
+        //public IActionResult GetAll(int accountId)
+        //{
+        //    if (accountId <= 0) return BadRequest();
 
-            var response = _creditAccountApplication.Get(accountId);
+        //    var response = _creditAccountApplication.Get(accountId);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region Asynchronous Methods
+        //#region Asynchronous Methods
 
-        [HttpGet("getAsync/{accountId}")]
-        public async Task<IActionResult> GetAsync(int accountId)
-        {
-            if (accountId <= 0) return BadRequest();
+        //[HttpGet("getAsync/{accountId}")]
+        //public async Task<IActionResult> GetAsync(int accountId)
+        //{
+        //    if (accountId <= 0) return BadRequest();
 
-            var response = await _creditAccountApplication.GetAsync(accountId);
+        //    var response = await _creditAccountApplication.GetAsync(accountId);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        #endregion
+        //#endregion
     }
 }

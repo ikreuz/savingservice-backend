@@ -9,43 +9,43 @@ namespace SavingService.Services.WebApi.Controllers
     [ApiController]
     public class SavingAccountController : ControllerBase
     {
-        private readonly ISavingAccountApplication _savingAccountApplication;
-        public SavingAccountController(ISavingAccountApplication savingAccountApplication)
-        {
-            _savingAccountApplication = savingAccountApplication;
-        }
+        //private readonly ISavingAccountApplication _savingAccountApplication;
+        //public SavingAccountController(ISavingAccountApplication savingAccountApplication)
+        //{
+        //    _savingAccountApplication = savingAccountApplication;
+        //}
 
 
-        #region Synchronous Methods
+        //#region Synchronous Methods
 
-        [HttpGet("get/{accountId}")]
-        public IActionResult Get(int accountId)
-        {
-            if (accountId <= 0) return BadRequest();
+        //[HttpGet("get/{accountId}")]
+        //public IActionResult Get(int accountId)
+        //{
+        //    if (accountId <= 0) return BadRequest();
 
-            var response = _savingAccountApplication.Get(accountId);
+        //    var response = _savingAccountApplication.Get(accountId);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region Asynchronous Methods
+        //#region Asynchronous Methods
 
-        [HttpGet("getAsync/{accountId}")]
-        public async Task<IActionResult> GetAsync(int accountId)
-        {
-            if (accountId <= 0) return BadRequest();
+        //[HttpGet("getAsync/{accountId}")]
+        //public async Task<IActionResult> GetAsync(int accountId)
+        //{
+        //    if (accountId <= 0) return BadRequest();
 
-            var response = await _savingAccountApplication.GetAsync(accountId);
+        //    var response = await _savingAccountApplication.GetAsync(accountId);
 
-            if (response.IsSuccess) return Ok(response);
+        //    if (response.IsSuccess) return Ok(response);
 
-            return BadRequest(response.Message);
-        }
+        //    return BadRequest(response.Message);
+        //}
 
-        #endregion
+        //#endregion
     }
 }

@@ -16,7 +16,9 @@ namespace SavingService.Application.Main
         private readonly ITransactionSavingDomain _transactionSavingDomain;
         private readonly IMapper _mapper;
 
-        public TransactionSavingApplication(ITransactionSavingDomain transactionSavingDomain, IMapper mapper)
+        public TransactionSavingApplication(
+            ITransactionSavingDomain transactionSavingDomain,
+            IMapper mapper)
         {
             _transactionSavingDomain = transactionSavingDomain;
             _mapper = mapper;
@@ -29,8 +31,15 @@ namespace SavingService.Application.Main
             var response = new Response<bool>();
             try
             {
+                var findSavingLast = _transactionSavingDomain.GetLast();
+                transactionDto.Saving_Id = findSavingLast + 1;
+
+
                 var transaction = _mapper.Map<TransactionSaving>(transactionDto);
+
+                
                 response.Data = _transactionSavingDomain.Insert(transaction);
+                
                 if (response.Data)
                 {
                     response.IsSuccess = true;
@@ -114,6 +123,26 @@ namespace SavingService.Application.Main
                 {
                     response.IsSuccess = true;
                     response.Message = "Successful query!";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
+        public Response<int> GetLast()
+        {
+            var response = new Response<int>();
+            try
+            {
+                var customer = _transactionSavingDomain.GetLast();
+                response.Data = _mapper.Map<int>(customer);
+                if (response.Data > 0)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful";
                 }
             }
             catch (Exception e)

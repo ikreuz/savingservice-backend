@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>D:\st00th\var.repos\savingservice-backend\src\SavingService.Services.WebApi\SavingService.Services.WebApi.xml</DocumentationFile>
+    <DocumentationFile>D:\st00th\v.code\savingservice-backend\SavingService.Services.WebApi.xml</DocumentationFile>
   </PropertyGroup>
 
 	<ItemGroup>
