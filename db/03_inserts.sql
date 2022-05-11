@@ -136,7 +136,7 @@ VALUES (4, 36, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 52, 3000, 0, 6000, 49);
 -- status 47 borrador, 48 por cobrar, 49 cobrado, 50 cancelada
 -- tipo de cuenta 36 credito, 37 ahorro
 INSERT INTO transaction_saving(saving_id, tipo_cuenta, apertura, numero_cuenta, documento_id, cantidad, total)
-VALUES (1, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 53, 400, 0);
+VALUES (1, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 53, 400, 400);
 
 INSERT INTO transaction_saving(saving_id, tipo_cuenta, apertura, numero_cuenta, documento_id, cantidad, total)
 VALUES (2, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 54, 2400, 2800);
@@ -149,6 +149,7 @@ VALUES (4, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 55, 1800, 0);
 
 INSERT INTO transaction_saving(saving_id, tipo_cuenta, apertura, numero_cuenta, documento_id, cantidad, total)
 VALUES (5, 37, 1, '6ca64aa5-9e56-b0e1-21a5-148ae4fae03f', 52, 0, 0);
+
 
 
 

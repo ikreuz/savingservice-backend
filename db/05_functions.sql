@@ -875,22 +875,21 @@ BEGIN
     END IF;
 
     IF __return = 1 THEN
-            UPDATE cliente
-            SET
-                c_credito  = _new_status
-            WHERE numero_cuenta = _change_id;
+        UPDATE cliente
+        SET c_credito = _new_status
+        WHERE numero_cuenta = _change_id;
 
-            GET DIAGNOSTICS __RW = ROW_COUNT;
+        GET DIAGNOSTICS __RW = ROW_COUNT;
 
     END IF;
 
-        IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
-            __return := 1;
-        ELSE
-            __return := -2;
-        END IF;
+    IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
+        __return := 1;
+    ELSE
+        __return := -2;
+    END IF;
 
-        RETURN __return;
+    RETURN __return;
 END;
 $$;
 alter function fn_cliente_cambiar_status_credito(uuid, boolean) owner to postgres;
@@ -917,22 +916,21 @@ BEGIN
     END IF;
 
     IF __return = 1 THEN
-            UPDATE cliente
-            SET
-                c_ahorro  = _new_status
-            WHERE numero_cuenta = _change_id;
+        UPDATE cliente
+        SET c_ahorro = _new_status
+        WHERE numero_cuenta = _change_id;
 
-            GET DIAGNOSTICS __RW = ROW_COUNT;
+        GET DIAGNOSTICS __RW = ROW_COUNT;
 
     END IF;
 
-        IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
-            __return := 1;
-        ELSE
-            __return := -2;
-        END IF;
+    IF __RW = 1 THEN --- Se obtuvo éxito al actualizar.
+        __return := 1;
+    ELSE
+        __return := -2;
+    END IF;
 
-        RETURN __return;
+    RETURN __return;
 END;
 $$;
 alter function fn_cliente_cambiar_status_ahorro(uuid, boolean) owner to postgres;
@@ -1412,13 +1410,10 @@ create or replace function fn_transaction_credit_obtener_listado()
                 tipo_cuenta   integer,
                 numero_cuenta uuid,
                 documento_id  integer,
-                documento_txt character varying,
                 cobrado       numeric,
                 por_cobrar    numeric,
-                cobrado_txt   character varying,
                 total         numeric,
-                status_id     integer,
-                status_txt    character varying
+                status_id     integer
             )
     language plpgsql
 as
@@ -1441,6 +1436,57 @@ BEGIN
             tipo_cuenta := __record.tipo_cuenta;
             numero_cuenta := __record.numero_cuenta;
             documento_id := __record.documento_id;
+            cobrado := __record.cobrado;
+            por_cobrar := __record.por_cobrar;
+            total := __record.total;
+            status_id := __record.status_id;
+            RETURN NEXT;
+        END LOOP;
+END;
+$$;
+alter function fn_transaction_credit_obtener_listado() owner to postgres;
+
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_transaction_credit_obtener_listado_cmp()
+    returns TABLE
+            (
+                credit_id     integer,
+                tipo_cuenta   integer,
+                numero_cuenta uuid,
+                cliente_id    integer,
+                cliente       character varying,
+                documento_id  integer,
+                documento_txt character varying,
+                cobrado       numeric,
+                por_cobrar    numeric,
+                cobrado_txt   character varying,
+                total         numeric,
+                status_id     integer,
+                status_txt    character varying
+            )
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_transaction_credit_obtener_listado_cmp
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __record record;
+    __query  text;
+BEGIN
+
+    __query := 'SELECT *  FROM vw_transaccion_credito ORDER BY credit_id DESC';
+
+    FOR __record IN EXECUTE __query
+        LOOP
+            credit_id := __record.credit_id;
+            tipo_cuenta := __record.tipo_cuenta;
+            numero_cuenta := __record.numero_cuenta;
+            cliente_id := __record.cliente_id;
+            cliente := __record.cliente;
+            documento_id := __record.documento_id;
             documento_txt := __record.documento_txt;
             cobrado := __record.cobrado;
             por_cobrar := __record.por_cobrar;
@@ -1452,7 +1498,7 @@ BEGIN
         END LOOP;
 END;
 $$;
-alter function fn_transaction_credit_obtener_listado() owner to postgres;
+alter function fn_transaction_credit_obtener_listado_cmp() owner to postgres;
 
 
 -- ----------------------------------------------------------------------------------- --
@@ -1505,7 +1551,8 @@ alter function fn_transaction_credit_eliminar_id(integer) owner to postgres;
 
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_saving_insertar(
-    _saving_id integer, _tipo_cuenta integer, _apertura integer, _numero_cuenta uuid, _documento_id integer, _cantidad numeric,
+    _saving_id integer, _tipo_cuenta integer, _apertura integer, _numero_cuenta uuid, _documento_id integer,
+    _cantidad numeric,
     _total numeric
 ) returns integer
     language plpgsql
@@ -1545,7 +1592,8 @@ alter function fn_transaction_saving_insertar(
 
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_saving_actualizar(
-    _saving_id integer, _tipo_cuenta integer, _apertura integer, _numero_cuenta uuid, _documento_id integer, _cantidad numeric,
+    _saving_id integer, _tipo_cuenta integer, _apertura integer, _numero_cuenta uuid, _documento_id integer,
+    _cantidad numeric,
     _total numeric
 ) returns integer
     language plpgsql
@@ -1639,10 +1687,9 @@ create or replace function fn_transaction_saving_obtener_listado()
             (
                 saving_id     integer,
                 tipo_cuenta   integer,
-                apertura integer,
+                apertura      integer,
                 numero_cuenta uuid,
                 documento_id  integer,
-                documento_txt character varying,
                 cantidad      numeric,
                 total         numeric
             )
@@ -1668,7 +1715,6 @@ BEGIN
             apertura := __record.apertura;
             numero_cuenta := __record.numero_cuenta;
             documento_id := __record.documento_id;
-            documento_txt := __record.documento_txt;
             cantidad := __record.cantidad;
             total := __record.total;
             RETURN NEXT;
@@ -1678,6 +1724,55 @@ $$;
 alter function fn_transaction_saving_obtener_listado() owner to postgres;
 
 
+-- ----------------------------------------------------------------------------------- --
+create or replace function fn_transaction_saving_obtener_listado_cmp()
+    returns TABLE
+            (
+                saving_id     integer,
+                tipo_cuenta   integer,
+                tipo_cuenta_txt character varying,
+                apertura      integer,
+                numero_cuenta uuid,
+                cliente_id    integer,
+                cliente       character varying,
+                documento_id  integer,
+                documento_txt character varying,
+                cantidad      numeric,
+                total         numeric
+            )
+    language plpgsql
+as
+$$
+/******************************************************************************
+NOMBRE: fn_transaction_saving_obtener_listado_cmp
+OBJETIVO:
+RETORNA:
+******************************************************************************/
+DECLARE
+    __record record;
+    __query  text;
+BEGIN
+
+    __query := 'SELECT * FROM vw_transaccion_ahorro ORDER BY saving_id DESC';
+
+    FOR __record IN EXECUTE __query
+        LOOP
+            saving_id := __record.saving_id;
+            tipo_cuenta := __record.tipo_cuenta;
+            tipo_cuenta_txt:=__record.tipo_cuenta_txt;
+            apertura := __record.apertura;
+            numero_cuenta := __record.numero_cuenta;
+            cliente_id := __record.cliente_id;
+            cliente := __record.cliente;
+            documento_id := __record.documento_id;
+            documento_txt := __record.documento_txt;
+            cantidad := __record.cantidad;
+            total := __record.total;
+            RETURN NEXT;
+        END LOOP;
+END;
+$$;
+alter function fn_transaction_saving_obtener_listado_cmp() owner to postgres;
 
 -- ----------------------------------------------------------------------------------- --
 create or replace function fn_transaction_saving_obtener_ultimo_id()

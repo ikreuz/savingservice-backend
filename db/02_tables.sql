@@ -203,8 +203,8 @@ alter sequence transaction_saving_id_seq
 create table transaction_saving
 (
     saving_id      integer default nextval('transaction_saving_id_seq'::regclass),
-    tipo_cuenta integer,
-    apertura integer,
+    tipo_cuenta    integer,
+    apertura       integer,
     numero_cuenta  uuid ,
     documento_id   integer default 0,
     cantidad       numeric,

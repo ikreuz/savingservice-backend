@@ -270,16 +270,18 @@ alter table vw_personal
 -- alter table vw_transaccion
 --     owner to postgres;
 
-
 create or replace view vw_transaccion_credito
-            (credit_id, tipo_cuenta, numero_cuenta, documento_id, documento_txt, cobrado, por_cobrar,
+            (credit_id, tipo_cuenta, numero_cuenta, cliente_id, cliente, documento_id, documento_txt, cobrado,
+             por_cobrar,
              cobrado_txt, total, status_id, status_txt)
 as
 SELECT t.credit_id,
        t.tipo_cuenta,
        t.numero_cuenta,
+       c.cliente_id,
+       (c.nombre::text || ' '::text) || (c.apellidos::text || ' '::text) cliente,
        t.documento_id,
-       cc.concepto  AS documento_txt,
+       cc.concepto  AS                                                   documento_txt,
        t.cobrado,
        t.por_cobrar,
        CASE
@@ -287,12 +289,13 @@ SELECT t.credit_id,
            WHEN t.cobrado = 0 THEN 'No ha sido cobrado'::text
            WHEN t.cobrado > 0 THEN 'Falta por cobrar'::text
            ELSE NULL::text
-           END      as cobrado_txt,
+           END      as                                                   cobrado_txt,
        t.total,
        t.status_id,
-       cc2.concepto AS status_txt
+       cc2.concepto AS                                                   status_txt
 
 FROM transaction_credit t
+         LEFT JOIN cliente c ON t.numero_cuenta = c.numero_cuenta
          LEFT JOIN conceptos cc ON t.documento_id = cc.concepto_id
          LEFT JOIN conceptos cc2 ON t.status_id = cc2.concepto_id
 ;
@@ -303,26 +306,36 @@ alter table vw_transaccion_credito
 
 
 create or replace view vw_transaccion_ahorro
-            (saving_id, tipo_cuenta, tipo_cuenta_txt, apertura, numero_cuenta, documento_id, documento_txt, cantidad,
+            (saving_id, tipo_cuenta, tipo_cuenta_txt, apertura, numero_cuenta, cliente_id, cliente,
+             documento_id, documento_txt, cantidad,
              total)
 as
 SELECT t.saving_id,
        t.tipo_cuenta,
-       cc2.concepto AS tipo_cuenta_txt,
+       cc2.concepto AS                                                   tipo_cuenta_txt,
        t.apertura,
        t.numero_cuenta,
+       c.cliente_id,
+       (c.nombre::text || ' '::text) || (c.apellidos::text || ' '::text) cliente,
        t.documento_id,
-       cc.concepto  AS documento_txt,
+       cc.concepto  AS                                                   documento_txt,
+--               CASE
+--            WHEN t.documento_id = 52 THEN 'Centa cerrada'::text
+--            WHEN t.documento_id = 53 THEN 'Apertura'::text
+--            WHEN t.documento_id = 54 THEN 'Deposito'::text
+--            WHEN t.documento_id = 55 THEN 'Retiro'::text
+--            ELSE NULL::text
+--            END      as documento_txt,
        t.cantidad,
        t.total
 
 FROM transaction_saving t
+         LEFT JOIN cliente c ON t.numero_cuenta = c.numero_cuenta
          LEFT JOIN conceptos cc ON t.documento_id = cc.concepto_id
          LEFT JOIN conceptos cc2 ON t.tipo_cuenta = cc2.concepto_id
 ;
 alter table vw_transaccion_ahorro
     owner to postgres;
-
 
 
 create or replace view vw_tower
