@@ -15,7 +15,8 @@ namespace SavingService.Domain.Interface
 
         TransactionCredit Get(int transactionId);
         IEnumerable<TransactionCredit> GetAll();
-      
+        IEnumerable<TransactionCreditCmp> GetAllCmp();
+
         #endregion
 
 

@@ -123,6 +123,25 @@ namespace SavingService.Application.Main
             return response;
         }
 
+        public Response<IEnumerable<TransactionCreditCmpDto>> GetAllCmp()
+        {
+            var response = new Response<IEnumerable<TransactionCreditCmpDto>>();
+            try
+            {
+                var transaction = _transactionCreditDomain.GetAllCmp();
+                response.Data = _mapper.Map<IEnumerable<TransactionCreditCmpDto>>(transaction);
+                if (response.Data != null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful query!";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
         #endregion
 
         #region Métodos Asíncronos

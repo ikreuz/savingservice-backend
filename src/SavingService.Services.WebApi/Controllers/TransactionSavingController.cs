@@ -78,6 +78,15 @@ namespace SavingService.Services.WebApi.Controllers
             return BadRequest(response.Message);
         }
 
+        [HttpGet("getallCmp")]
+        public IActionResult GetAllCmp()
+        {
+            var response = _transactionSavingApplication.GetAllCmp();
+
+            if (response.IsSuccess) return Ok(response);
+
+            return BadRequest(response.Message);
+        }
         #endregion
 
         #region Asynchronous Methods

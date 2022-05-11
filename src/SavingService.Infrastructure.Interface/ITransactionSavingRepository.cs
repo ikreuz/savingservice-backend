@@ -15,7 +15,7 @@ namespace SavingService.Infrastructure.Interface
 
         TransactionSaving Get(int transactionId);
         IEnumerable<TransactionSaving> GetAll();
-
+        IEnumerable<TransactionSavingCmp> GetAllCmp();
         int GetLast();
         #endregion
 

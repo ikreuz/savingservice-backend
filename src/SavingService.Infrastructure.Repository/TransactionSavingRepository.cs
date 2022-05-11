@@ -97,6 +97,17 @@ namespace SavingService.Infrastructure.Repository
             }
         }
 
+        public IEnumerable<TransactionSavingCmp> GetAllCmp()
+        {
+            using (var connection = _connectionFactory.GetConnection)
+            {
+                var query = _pathToQuery + "_obtener_listado_cmp";
+
+                var transaction = connection.Query<TransactionSavingCmp>(query, commandType: CommandType.StoredProcedure);
+                return transaction;
+            }
+        }
+
         public int GetLast()
         {
             using (var connection = _connectionFactory.GetConnection)

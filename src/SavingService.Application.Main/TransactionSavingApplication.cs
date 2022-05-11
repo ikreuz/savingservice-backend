@@ -132,6 +132,26 @@ namespace SavingService.Application.Main
             return response;
         }
 
+        public Response<IEnumerable<TransactionSavingCmpDto>> GetAllCmp()
+        {
+            var response = new Response<IEnumerable<TransactionSavingCmpDto>>();
+            try
+            {
+                var transaction = _transactionSavingDomain.GetAllCmp();
+                response.Data = _mapper.Map<IEnumerable<TransactionSavingCmpDto>>(transaction);
+                if (response.Data != null)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Successful query!";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
         public Response<int> GetLast()
         {
             var response = new Response<int>();

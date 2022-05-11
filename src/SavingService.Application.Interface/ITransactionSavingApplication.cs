@@ -16,6 +16,7 @@ namespace SavingService.Application.Interface
 
         Response<TransactionSavingDto> Get(int transactionId);
         Response<IEnumerable<TransactionSavingDto>> GetAll();
+        Response<IEnumerable<TransactionSavingCmpDto>> GetAllCmp();
         Response<int> GetLast();
 
         #endregion

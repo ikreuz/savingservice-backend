@@ -44,6 +44,11 @@ namespace SavingService.Domain.Core
             return _transactionSavingRepository.GetAll();
         }
 
+        public IEnumerable<TransactionSavingCmp> GetAllCmp()
+        {
+            return _transactionSavingRepository.GetAllCmp();
+        }
+
         public int GetLast()
         {
             return _transactionSavingRepository.GetLast();

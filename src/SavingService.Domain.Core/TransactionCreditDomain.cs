@@ -44,6 +44,10 @@ namespace SavingService.Domain.Core
             return _transactionCreditRepository.GetAll();
         }
 
+        public IEnumerable<TransactionCreditCmp> GetAllCmp()
+        {
+            return _transactionCreditRepository.GetAllCmp();
+        }
         #endregion
 
         #region Asynchronous Methods
